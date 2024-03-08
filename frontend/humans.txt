@@ -11,7 +11,8 @@ Role: Developper.
 
 
 /* THANKS */			
-Name: https://he-arc.ch
+Name: HE-Arc
+Site: https://he-arc.ch
 
 
 /* SITE */    

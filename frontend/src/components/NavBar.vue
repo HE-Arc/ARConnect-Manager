@@ -1,18 +1,32 @@
 <script setup></script>
 
 <template>
-  <q-header reveal elevated class="bg-grey-10 text-white" height-hint="98">
-    <q-toolbar>
-      <q-icon name="coffee" size="xl"></q-icon>
-      <q-toolbar-title>ARConnect</q-toolbar-title>
-    </q-toolbar>
-
-    <q-tabs align="left">
-      <q-route-tab :to="{ name: 'home' }" label="Home" />
-      <q-route-tab :to="{ name: 'beverages' }" label="Add beverage" />
-      <q-route-tab :to="{ name: 'detailsAndStats' }" label="Details and stats" />
-    </q-tabs>
-  </q-header>
+  <nav reveal elevated class="bg-grey-10 text-white" height-hint="68">
+    <div>
+      <router-link id="home-link" :to="{ name: 'home' }"><img src="@/assets/images/logo_white_text.svg"></router-link>
+    </div>
+    <div>
+      <router-link :to="{ name: 'tournaments' }">Tournois</router-link>
+      <router-link :to="{ name: 'login' }">Se connecter</router-link>
+    </div>
+  </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+#home-link img{
+  height: 1rem;
+}
+nav {
+  display: flex;
+  background-image: url("@/assets/images/arconnect_foreground.png");
+  background-position: 0px 0px;
+  padding: 14px 48px 14px 48px;
+  justify-content: space-between;
+}
+
+q-toolbar-title img {
+  height: 1rem;
+
+}
+
+</style>
