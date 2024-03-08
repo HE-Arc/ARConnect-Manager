@@ -11,8 +11,9 @@
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
 h1 {
+    margin-top: 25vh;
     font-size: 3rem;
     grid-column: 2 / span 6;
 

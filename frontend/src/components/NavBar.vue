@@ -12,14 +12,12 @@
   </nav>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 #home-link img{
-  height: 1rem;
+  height: 1.2rem;
 }
 nav {
   display: flex;
-  background-image: url("@/assets/images/arconnect_foreground.png");
-  background-position: 0px 0px;
   padding: 14px 64px 14px 64px;
   justify-content: space-between;
   align-items: center;
@@ -32,17 +30,8 @@ div#navbar-links {
   align-items: center;
 }
 
-q-toolbar-title img {
-  height: 1rem;
-}
-
-nav div {
-  font-size: 0.8rem;
-}
-
 a {
   text-decoration: none;
-  font-weight: 800;
   color: white;
   text-transform: uppercase;
 }

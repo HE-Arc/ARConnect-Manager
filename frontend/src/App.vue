@@ -3,12 +3,16 @@ import NavBar from '@/components/NavBar.vue';
 </script>
 
 <template>
-  <q-layout view="hHh Lpr fFf">
+  <div id="main">
     <NavBar />
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+    <router-view />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div#main {
+  background-image: url("@/assets/images/arconnect_foreground.png");
+  background-position: 0px 0px;
+  height: 100vh;
+}
+</style>

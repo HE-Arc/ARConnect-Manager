@@ -2,7 +2,7 @@
 @import "fonts";
 
 body {
-  font: 100% $font-stack;
+  font: normal normal 500 100% $font-stack ;
   color: $background;
   padding: 0px;
   margin: 0px;
@@ -16,7 +16,7 @@ body {
   color: $on-primary;
   background-color: $primary;
   text-decoration: none;
-  padding: 8px 12px 8px 12px;
+  padding: 8px 24px 8px 24px;
   border-radius: 4px;
   text-transform: uppercase;
   font-weight: 600;

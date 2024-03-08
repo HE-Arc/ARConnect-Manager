@@ -1,5 +1,4 @@
 <script>
-console.log("Tournois")
 </script>
 
 <template>
