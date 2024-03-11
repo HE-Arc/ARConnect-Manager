@@ -13,9 +13,10 @@
 </template>
 
 <style scoped lang="scss">
-#home-link img{
+#home-link img {
   height: 1.2rem;
 }
+
 nav {
   display: flex;
   padding: 14px 64px 14px 64px;

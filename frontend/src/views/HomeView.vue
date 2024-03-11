@@ -6,7 +6,7 @@
             dans un évènement dédié aux jeux-vidéos,
             à la compétition et à la communauté !
         </p>
-        <a href="#objectifs" class="btn-primary">Découvrir</a>
+        <router-link :to="{ name: 'tournaments' }" class="btn-primary">Découvrir</router-link>
     </div>
 </template>
 
@@ -15,14 +15,15 @@
 h1 {
     margin-top: 25vh;
     font-size: 3rem;
-    grid-column: 2 / span 6;
+    grid-column: 3 / span 6;
 
 }
+
 p#description {
-    grid-column: 2 / span 4;
+    grid-column: 3 / span 4;
 }
 
 a.btn-primary {
-    grid-column-start: 2;
+    grid-column-start: 3;
 }
 </style>
