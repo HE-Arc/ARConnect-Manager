@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.7.2"
+django = "==5.0.3"
+sqlparse = "==0.4.4"
+tzdata = "==2024.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
