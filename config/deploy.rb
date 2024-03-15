@@ -51,13 +51,26 @@ namespace :pip do
     end
 end
 
-after 'deploy:publishing', 'gunicorn:restart'
+after 'deploy:updating', 'npm:install'
 
-namespace :gunicorn do
-    desc 'Restart application'
-    task :restart do
-        on roles(:web) do |h|
-	    execute :sudo, 'systemctl restart gunicorn'
-	end
+namespace :npm do
+
+    desc 'Install'
+    task :install do
+        on roles([:app, :web]) do |h|
+        execute "cd #{release_path}/frontend ; npm install"
+        end
     end
 end
+
+
+# after 'deploy:publishing', 'gunicorn:restart'
+
+# namespace :gunicorn do
+#     desc 'Restart application'
+#     task :restart do
+#         on roles(:web) do |h|
+# 	    execute :sudo, 'systemctl restart gunicorn'
+# 	    end
+#     end
+# end
