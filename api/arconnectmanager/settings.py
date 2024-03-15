@@ -27,11 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # False if not in os.environ because of casting above
-DEBUG = env('DEBUG')
+#DEBUG = env('DEBUG')
+DEBUG = True
 
 # Raises Django's ImproperlyConfigured
 # exception if SECRET_KEY not in os.environ
-SECRET_KEY = env('SECRET_KEY')
+
+#SECRET_KEY = env('SECRET_KEY') #Temporary change, to be removed for production
+SECRET_KEY = '-fh0n9)03u)17mvz1of+9)!+q=b!8&c+fk%^rxct2+t(ni=c!d'
 
 ALLOWED_HOSTS = []
 
