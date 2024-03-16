@@ -1,40 +1,63 @@
 <script setup>
-// Dummy data
-let data = {
-    tournaments: [
-        {
-            title: "CS2 - 5v5",
-            desc: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-            state: "OPEN",
-            imageUrl: "https://i.ytimg.com/vi/aRRQuvD4E5E/maxresdefault.jpg",
-            maxPlayerPerTeam: 3,
-            gameID: 1,
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import TournamentPreview from '../components/TournamentPreview.vue';
 
-        },
-        {
-            title: "CS2 - 2v2",
-            desc: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-            state: "OPEN",
-            imageUrl: "https://i.ytimg.com/vi/aRRQuvD4E5E/maxresdefault.jpg",
-            maxPlayerPerTeam: 3,
-            gameID: 1,
+const tournaments = ref([]);
 
-        },
-        {
-            title: "CS2 - 1v1",
-            desc: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-            state: "OPEN",
-            imageUrl: "https://i.ytimg.com/vi/aRRQuvD4E5E/maxresdefault.jpg",
-            maxPlayerPerTeam: 3,
-            gameID: 1,
-        },
-    ]
+const fetchTournaments = async () => {
+    const res = await axios.get("http://localhost:8000/api/tournamentitems");
+    tournaments.value = res.data;
 };
+
+onMounted(() => {
+    fetchTournaments();
+});
+
 </script>
 
 <template>
-    <h1>Tournois</h1>
-    <h2>Helloooo</h2>
-    <p>{{ data["tournaments"][0]["title"] }}</p>
-    <img :src="data['tournaments'][0]['imageUrl']">
+    <div class="grid-container">
+        <h1>Tournois</h1>
+        <div class="container">
+            <TournamentPreview v-for="(tournament, index) in tournaments" :tournament :key="index" class="item" />
+        </div>
+    </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/breakpoints";
+
+h1 {
+    grid-column: 1 / span 12;
+    grid-row: 1 / span 1;
+    margin-bottom: 16px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 8px;
+    grid-column: 1 / span 12;
+    grid-row: 2 / span 1;
+}
+
+.item {
+    width: calc(25% - (3 * 8px / 4));
+    min-width: 200px;
+    aspect-ratio: 16 / 9;
+}
+
+@media(max-width: $medium-breakpoint) {
+    .item {
+        width: calc(50% - (3 * 8px / 4));
+    }
+}
+
+@media(max-width: $small-breakpoint) {
+    .item {
+        width: calc(100% - (3 * 8px / 4));
+    }
+}
+</style>

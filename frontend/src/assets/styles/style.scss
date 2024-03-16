@@ -21,14 +21,15 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
   font-weight: 600;
+  -webkit-line-clamp: 1;
 }
 
 .grid-container {
   display: grid;
   column-gap: 16px;
   row-gap: 0px;
-  padding-left: 64px;
-  padding-right: 64px;
+  padding-left: 3%;
+  padding-right: 3%;
   grid-template-columns: repeat(12, 1fr);
 }
 
