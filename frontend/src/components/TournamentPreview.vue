@@ -31,7 +31,7 @@ function navigateToTournamentDetails() {
     transition: all 0.25s ease-out;
 
     &:hover {
-        scale: 110%;
+        scale: 105%;
         cursor: pointer;
         box-shadow: rgba($color: #000000, $alpha: 0.2) 0px 0px 10px 10px;
     }

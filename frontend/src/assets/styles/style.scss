@@ -52,3 +52,7 @@ p {
 .hidden {
   display: none;
 }
+
+button, input[type=submit] {
+  border: none;
+}

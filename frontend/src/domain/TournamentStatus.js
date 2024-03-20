@@ -6,10 +6,9 @@ export const stateToString = (code) => {
             return "Ouvert";
         case 2:
             return "En cours";
-        case 2:
+        case 3:
             return "Terminé";
         default:
             return "Status du tournoi";
     }
-
 }
