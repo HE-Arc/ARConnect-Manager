@@ -6,7 +6,7 @@ import TournamentPreview from '../components/TournamentPreview.vue';
 const tournaments = ref([]);
 
 const fetchTournaments = async () => {
-    const res = await axios.get("http://localhost:8000/api/tournamentitems");
+    const res = await axios.get("http://localhost:8000/api/tournaments");
     tournaments.value = res.data;
 };
 

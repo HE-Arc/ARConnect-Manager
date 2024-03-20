@@ -1,5 +1,4 @@
 export const stateToString = (code) => {
-    console.log(code)
     switch (code) {
         case 0:
             return "Fermé";
