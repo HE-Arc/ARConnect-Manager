@@ -2,18 +2,21 @@
 import { Label } from 'radix-vue'
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const router = useRouter();
+const form = ref(null)
 
-let tournamentName;
-let tournamentDescription;
-let tournamentState;
+let name;
+let description;
+let state;
 
 const addTournament = () => {
+    if (!form.value.reportValidity()) return;
     let data = {
-        "name": tournamentName,
-        "description": tournamentDescription,
-        "state": parseInt(tournamentState)
+        "name": name,
+        "description": description,
+        "state": parseInt(state)
     };
 
     axios.post(
@@ -28,22 +31,21 @@ const addTournament = () => {
 <template>
     <div class="grid-container">
         <h1>Ajouter un tournoi</h1>
-        <form>
-            <Label for="tournamentName">Nom du tournoi :</Label>
-            <input id="firstName" type="text" placeholder="Free For All" v-model="tournamentName" required>
+        <form action="http://localhost:8000/api/tournaments/ " method="post" ref="form">
+            <Label for="name">Nom du tournoi :</Label>
+            <input id="name" type="text" name="name" placeholder="Free For All" v-model="name" required>
 
-            <Label for="tournamentDescription">Description :</Label>
-            <textarea id="tournamentDescription" placeholder="60 joueurs, 5 jeux, un seul vainqueur..."
-                v-model="tournamentDescription" required></textarea>
+            <Label for="description">Description :</Label>
+            <textarea id="description" placeholder="60 joueurs, 5 jeux, un seul vainqueur..." name="description"
+                v-model="description" required></textarea>
 
-            <Label for="tournamentState">État :</Label>
-            <select id="tournamentState" v-model="tournamentState" required>
+            <Label for="state">État :</Label>
+            <select id="state" v-model="state" required name="state">
                 <option value="0">Fermé</option>
                 <option value="1">Ouvert</option>
                 <option value="2">En cours</option>
                 <option value="3">Terminé</option>
             </select>
-
         </form>
         <button class="btn-primary" @click="addTournament">Ajouter</button>
     </div>
@@ -74,5 +76,10 @@ form {
         grid-column: 3 / span 4;
         height: 32px;
     }
+}
+
+button {
+    grid-column: 3 / span 4;
+    height: 32px;
 }
 </style>
