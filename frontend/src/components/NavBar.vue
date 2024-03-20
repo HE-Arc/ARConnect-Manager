@@ -14,6 +14,7 @@ const toggleMenu = () => {
       <router-link id="home-link" :to="{ name: 'home' }"><img src="@/assets/images/logo_white_text.svg"></router-link>
     </div>
     <div id="navbar-links">
+      <router-link :to="{ name: 'manageTournaments' }">Administration</router-link>
       <router-link :to="{ name: 'tournaments' }">Tournois</router-link>
       <router-link class="btn-primary" :to="{ name: 'login' }">Se connecter</router-link>
     </div>
