@@ -1,0 +1,22 @@
+/* TEAM */      
+Name: Jonas Flückiger.
+Role: Developper, designer.
+
+Name: Alexandre Maquet.
+Role: Developper.
+
+Name: Daniel Moreira Dos Santos.
+Role: Developper.
+
+
+
+/* THANKS */			
+Name: HE-Arc
+Site: https://he-arc.ch
+
+
+/* SITE */    
+Last update: 2024/03/08
+Standards: HTML5, CSS3.
+Components: VueJS, ViteJS, SASS, Django.
+Software: VSCode, NodeJS, Docker.
