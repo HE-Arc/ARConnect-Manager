@@ -10,6 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+
+import environ
+import os
+
+
 from pathlib import Path
 import environ
 import os
@@ -22,21 +27,26 @@ env = environ.Env(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# False if not in os.environ because of casting above
-#DEBUG = env('DEBUG')
-DEBUG = True
 
-# Raises Django's ImproperlyConfigured
-# exception if SECRET_KEY not in os.environ
 
-#SECRET_KEY = env('SECRET_KEY') #Temporary change, to be removed for production
-SECRET_KEY = '-fh0n9)03u)17mvz1of+9)!+q=b!8&c+fk%^rxct2+t(ni=c!d'
 
-ALLOWED_HOSTS = []
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('SECRET_KEY')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env('DEBUG')
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+
 
 # Application definition
 

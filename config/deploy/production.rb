@@ -7,8 +7,11 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 server "157.26.64.211", user: "django", roles: %w{app db web}, port: 31121
-set :deploy_to, "/home/django/.project-default/"
-set :branch, "dev"
+
+
+set :deploy_to, "/home/django/project/"
+set :branch, "main"
+
 
 
 # role-based syntax
@@ -61,4 +64,4 @@ set :branch, "dev"
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
-set :ssh_options, { keys: %w(/home/jonas/.ssh/github_hearc) }
+
