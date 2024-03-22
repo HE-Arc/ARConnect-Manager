@@ -39,6 +39,10 @@ const router = createRouter({
       name: "addTournament",
       component: AddTournamentView,
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { name: "home" },
+    }
   ],
 });
 
