@@ -1,6 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.18.1"
 
+
 set :application, "ARConnect-Manager"
 set :repo_url, "https://github.com/HE-Arc/ARConnect-Manager.git"
 
@@ -21,6 +22,9 @@ set :repo_url, "https://github.com/HE-Arc/ARConnect-Manager.git"
 # set :pty, true
 
 # Default value for :linked_files is []
+
+# TODO : append :linked_files, '.env'
+
 # append :linked_files, "config/database.yml", 'config/master.key'
 
 # Default value for linked_dirs is []
@@ -56,9 +60,12 @@ namespace :pip do
     task :install do
         on roles([:app, :web]) do |h|
         execute "pip install -r #{release_path}/api/requirements.txt"
+
         end
     end
 end
+
+
 
 # Construire et déployer l'application Vue.js
 after 'deploy:updated', 'vue:deploy'

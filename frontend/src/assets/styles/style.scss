@@ -1,0 +1,58 @@
+@import "colors";
+@import "fonts";
+
+
+body {
+  font: normal normal 500 100% $font-stack ;
+  color: $background;
+  padding: 0;
+  margin: 0;
+  background-color: #121212;
+  overflow-x: hidden;
+  color: white;
+}
+
+/* Components style */
+.btn-primary {
+  color: $on-primary;
+  background-color: $primary;
+  text-decoration: none;
+  padding: 8px 24px 8px 24px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  -webkit-line-clamp: 1;
+}
+
+.grid-container {
+  display: grid;
+  column-gap: 16px;
+  row-gap: 0;
+  padding-left: 3%;
+  padding-right: 3%;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+p {
+  font-weight: 400;
+  font-size: 18px;
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+button, input[type=submit] {
+  border: none;
+}

@@ -1,3 +1,4 @@
 from django.contrib import admin
+from arconnectmanagerapp.models import TournamentItem
 
-# Register your models here.
+admin.site.register(TournamentItem)

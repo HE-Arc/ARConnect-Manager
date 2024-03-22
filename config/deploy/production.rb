@@ -8,9 +8,9 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 server "157.26.64.211", user: "django", roles: %w{app db web}, port: 31121
 
+
 set :deploy_to, "/home/django/project/"
 set :branch, "main"
-
 
 
 
@@ -64,3 +64,4 @@ set :branch, "main"
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
