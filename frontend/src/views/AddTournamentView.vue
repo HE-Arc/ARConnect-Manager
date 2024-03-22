@@ -20,7 +20,7 @@ const addTournament = () => {
     };
 
     axios.post(
-        "http://localhost:8000/api/tournaments/ ",
+        "https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments/ ",
         data
     ).then(() => {
         router.push({ name: "manageTournaments" })
@@ -31,7 +31,7 @@ const addTournament = () => {
 <template>
     <div class="grid-container">
         <h1>Ajouter un tournoi</h1>
-        <form action="http://localhost:8000/api/tournaments/ " method="post" ref="form">
+        <form ref="form">
             <Label for="name">Nom du tournoi :</Label>
             <input id="name" type="text" name="name" placeholder="Free For All" v-model="name" required>
 

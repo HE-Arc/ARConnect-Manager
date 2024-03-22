@@ -9,7 +9,7 @@ const router = useRouter();
 const tournaments = ref([]);
 
 const fetchTournaments = async () => {
-    const res = await axios.get("http://localhost:8000/api/tournaments");
+    const res = await axios.get("https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments");
     tournaments.value = res.data;
 };
 

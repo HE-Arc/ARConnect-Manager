@@ -10,7 +10,7 @@ const tournamentId = route.params.tournamentId;
 const tournament = ref(null);
 
 const fetchTournament = async () => {
-    const res = await axios.get(`http://localhost:8000/api/tournaments/${tournamentId}`);
+    const res = await axios.get(`https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments/${tournamentId}`);
     tournament.value = res.data;
 };
 
