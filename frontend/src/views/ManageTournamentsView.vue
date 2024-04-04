@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import TournamentPreview from '../components/TournamentPreview.vue';
 import { useRouter } from 'vue-router';
+import { stateToString } from '@/domain/TournamentStatus'
 
 const router = useRouter();
 
@@ -13,7 +14,7 @@ const fetchTournaments = async () => {
     tournaments.value = res.data;
 };
 
-function navigateToTournamentDetails() {
+function navigateToTournamentCreation() {
     router.push({ name: "addTournament" })
 }
 
@@ -27,11 +28,16 @@ onMounted(() => {
     <div class="grid-container">
         <h1>Gérer les tournois</h1>
         <div class="container">
-            <TournamentPreview v-for="(tournament, index) in tournaments" :tournament :key="index" class="item" />
-            <div class="item" id="add-button" @click="navigateToTournamentDetails">
-                <span class="material-symbols-outlined">
-                    add
-                </span>
+            <div class="tournament-headers">
+                <div>Nom</div>
+                <div>Description</div>
+                <div>Status</div>
+            </div>
+            <div v-for="(tournament, index) in tournaments" class="tournament-item">
+                <div>{{ tournament.name }}</div>
+                <div>{{ tournament.description }}</div>
+                <div>{{ stateToString(tournament.state) }}</div>
+                <hr>
             </div>
         </div>
     </div>
@@ -39,6 +45,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/breakpoints";
+@import "@/assets/styles/colors";
 
 h1 {
     grid-column: 1 / span 12;
@@ -47,18 +54,47 @@ h1 {
 }
 
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    gap: 8px;
     grid-column: 1 / span 12;
     grid-row: 2 / span 1;
-}
 
-.item {
-    width: calc(25% - (3 * 8px / 4));
-    min-width: 200px;
-    aspect-ratio: 16 / 9;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+
+    gap: 8px;
+
+    background-color: $surface;
+
+    padding: 32px;
+    border-radius: 16px;
+
+    .tournament-item,
+    .tournament-headers {
+        grid-column: 1 / span 12;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+
+        & div:nth-child(1) {
+            grid-column: span 3;
+        }
+
+        & div:nth-child(2) {
+            grid-column: span 8;
+        }
+
+        & div:nth-child(3) {
+            grid-column: span 1;
+        }
+
+        hr {
+            grid-column: span 12;
+            width: 100%;
+            color: $surface;
+        }
+    }
+
+    .tournament-headers {
+        font-size: 1.4rem;
+    }
 }
 
 #add-button {
