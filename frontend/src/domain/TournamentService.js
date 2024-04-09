@@ -24,8 +24,8 @@ export class TournamentService {
     }
 
     /**
-     * Returns all tournaments.
-     * 
+     * Returns the corresponding tournament by ID.
+     * @param {number} id - The ID of the tournament.
      * @return {Tournament} The tournament.
      */
     static async getTournamentById(id) {
@@ -38,6 +38,60 @@ export class TournamentService {
             TournamentStatus.fromId(response.data.state),
         );
 
+    }
+
+    /**
+     * Deletes a tournament.
+     * @param {number} id - The ID of the tournament.
+     * @return {boolean} Wether the deletion was successful.
+     */
+    static async deleteTournament(id) {
+        const response = await axios.delete(`http://localhost:8000/api/tournaments/${id}`);
+        return response.status >= 200 && response.status < 300
+    }
+
+    /**
+     * Adds a tournament.
+     * @param {string} name - The name of the tournament.
+     * @param {string} description - The description of the tournament.
+     * @param {TournamentStatus} status - The status of the tournament.
+     * 
+     * @return {boolean} Wether the creation was successful.
+     */
+    static async addTournament(name, description, status) {
+        let data = {
+            "name": name,
+            "description": description,
+            "state": parseInt(status.id)
+        };
+
+        const response = await axios.post(
+            "http://localhost:8000/api/tournaments/",
+            data
+        )
+
+        return response.status >= 200 && response.status < 300
+    }
+
+    /**
+     * Updates a tournament.
+     * @param {Tournament} tournament - The tournament.
+     * 
+     * @return {boolean} Wether the update was successful.
+     */
+    static async updateTournament(tournament) {
+        let data = {
+            "name": tournament.name,
+            "description": tournament.description,
+            "state": parseInt(tournament.status.id)
+        };
+
+        const response = await axios.put(
+            `http://localhost:8000/api/tournaments/${tournament.id}/`,
+            data
+        )
+
+        return response.status >= 200 && response.status < 300
     }
 
 

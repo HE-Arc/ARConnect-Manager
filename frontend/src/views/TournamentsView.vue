@@ -1,8 +1,7 @@
 <script setup>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import TournamentPreview from '../components/TournamentPreview.vue';
-import { TournamentService } from '../domain/TournamentService';
+import TournamentPreview from '@/components/TournamentPreview.vue';
+import { TournamentService } from '@/domain/TournamentService';
 
 const tournaments = ref([]);
 

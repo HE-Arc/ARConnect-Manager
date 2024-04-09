@@ -5,6 +5,7 @@ import LoginView from "@/views/LoginView.vue";
 import TournamentDetailsView from "@/views/TournamentDetailsView.vue";
 import ManageTournamentsView from "@/views/ManageTournamentsView.vue";
 import AddTournamentView from "@/views/AddTournamentView.vue";
+import EditTournamentView from "@/views/EditTournamentView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/admin/tournaments/new",
       name: "addTournament",
       component: AddTournamentView,
+    },
+    {
+      path: "/admin/tournaments/:tournamentId",
+      name: "editTournament",
+      component: EditTournamentView,
     },
     {
       path: '/:pathMatch(.*)*',
