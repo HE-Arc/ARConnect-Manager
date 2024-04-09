@@ -1,11 +1,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { TournamentService } from '@/domain/TournamentService';
 import { useRouter } from 'vue-router';
-import { TournamentService } from '../domain/TournamentService';
 
 const router = useRouter();
-
 const tournaments = ref([]);
+
+function deleteTournament(id) {
+    TournamentService.deleteTournament(id).then((successful) => {
+        if (!successful) return;
+        tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
+    });
+}
+
+function editTournament(id) {
+    router.push({ name: "editTournament", params: { tournamentId: id } })
+}
+
+function addTournament() {
+    router.push({ name: "addTournament" })
+}
 
 onMounted(async () => {
     tournaments.value = await TournamentService.getAllTournaments();
@@ -15,17 +29,32 @@ onMounted(async () => {
 
 <template>
     <div class="grid-container">
-        <h1>Gérer les tournois</h1>
+        <h1>
+            Gérer les tournois
+            <span @click="addTournament" class="material-symbols-outlined">
+                add
+            </span>
+        </h1>
+
         <div class="container">
             <div class="tournament-headers">
                 <div>Nom</div>
                 <div>Description</div>
                 <div>Status</div>
+                <div></div>
             </div>
             <div v-for="(tournament, index) in tournaments" class="tournament-item">
                 <div>{{ tournament.name }}</div>
                 <div>{{ tournament.description }}</div>
                 <div>{{ (tournament.status) }}</div>
+                <div>
+                    <span @click="deleteTournament(tournament.id)" class="material-symbols-outlined">
+                        delete
+                    </span>
+                    <span @click="editTournament(tournament.id)" class="material-symbols-outlined">
+                        edit
+                    </span>
+                </div>
                 <hr>
             </div>
         </div>
@@ -40,6 +69,12 @@ h1 {
     grid-column: 1 / span 12;
     grid-row: 1 / span 1;
     margin-bottom: 16px;
+
+    span {
+        cursor: pointer;
+        margin-left: 16px;
+    }
+
 }
 
 .container {
@@ -67,17 +102,35 @@ h1 {
         }
 
         & div:nth-child(2) {
-            grid-column: span 8;
+            grid-column: span 7;
         }
 
         & div:nth-child(3) {
             grid-column: span 1;
         }
 
+        & div:nth-child(4) {
+            grid-column: span 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            span:hover {
+                cursor: pointer;
+            }
+
+        }
+
         hr {
             grid-column: span 12;
             width: 100%;
             color: $surface;
+        }
+
+        &:last-child {
+            hr {
+                display: none;
+            }
         }
     }
 

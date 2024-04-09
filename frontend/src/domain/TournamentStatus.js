@@ -21,12 +21,16 @@ export class TournamentStatus {
     static fromId(id) {
         switch (id) {
             case 0:
+            case "0":
                 return this.Closed;
             case 1:
+            case "1":
                 return this.Open;
             case 2:
+            case "2":
                 return this.Running;
             case 3:
+            case "3":
                 return this.Completed;
         }
     }
