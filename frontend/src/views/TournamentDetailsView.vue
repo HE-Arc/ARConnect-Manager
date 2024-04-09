@@ -2,20 +2,14 @@
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { stateToString } from '@/domain/TournamentStatus'
+import { TournamentService } from '@/domain/TournamentService';
 
 const route = useRoute();
 const tournamentId = route.params.tournamentId;
-
 const tournament = ref(null);
 
-const fetchTournament = async () => {
-    const res = await axios.get(`http://localhost:8000/api/tournaments/${tournamentId}`);
-    tournament.value = res.data;
-};
-
-onMounted(() => {
-    fetchTournament();
+onMounted(async () => {
+    tournament.value = await TournamentService.getTournamentById(tournamentId);
 });
 
 
@@ -26,7 +20,7 @@ onMounted(() => {
     <div v-if="tournament" class="grid-container">
         <h1>{{ tournament.name }}</h1>
         <p>{{ tournament.description }}</p>
-        <p>{{ stateToString(tournament.state) }}</p>
+        <p>{{ tournament.status }}</p>
     </div>
 </template>
 

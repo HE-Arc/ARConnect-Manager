@@ -1,25 +1,14 @@
 <script setup>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import TournamentPreview from '../components/TournamentPreview.vue';
 import { useRouter } from 'vue-router';
-import { stateToString } from '@/domain/TournamentStatus'
+import { TournamentService } from '../domain/TournamentService';
 
 const router = useRouter();
 
 const tournaments = ref([]);
 
-const fetchTournaments = async () => {
-    const res = await axios.get("http://localhost:8000/api/tournaments");
-    tournaments.value = res.data;
-};
-
-function navigateToTournamentCreation() {
-    router.push({ name: "addTournament" })
-}
-
-onMounted(() => {
-    fetchTournaments();
+onMounted(async () => {
+    tournaments.value = await TournamentService.getAllTournaments();
 });
 
 </script>
@@ -36,7 +25,7 @@ onMounted(() => {
             <div v-for="(tournament, index) in tournaments" class="tournament-item">
                 <div>{{ tournament.name }}</div>
                 <div>{{ tournament.description }}</div>
-                <div>{{ stateToString(tournament.state) }}</div>
+                <div>{{ (tournament.status) }}</div>
                 <hr>
             </div>
         </div>

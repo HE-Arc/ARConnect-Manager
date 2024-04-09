@@ -2,16 +2,12 @@
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import TournamentPreview from '../components/TournamentPreview.vue';
+import { TournamentService } from '../domain/TournamentService';
 
 const tournaments = ref([]);
 
-const fetchTournaments = async () => {
-    const res = await axios.get("http://localhost:8000/api/tournaments");
-    tournaments.value = res.data;
-};
-
-onMounted(() => {
-    fetchTournaments();
+onMounted(async () => {
+    tournaments.value = await TournamentService.getAllTournaments()
 });
 
 </script>
