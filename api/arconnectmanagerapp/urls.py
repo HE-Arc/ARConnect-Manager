@@ -16,5 +16,5 @@ urlpatterns = [
     path("user/register/", RegisterView.as_view(), name="register"),   #POST
     path("user/login/", LoginView.as_view(), name="login"),            #POST
     path("user/logout/", LogoutView.as_view(), name="logout"),         #POST
-    path("user/", UserDetailsView.as_view(), name="user_details"),     #GET
+    path('user/', views.UserView.as_view(), name='user_details'),      #GET
 ]
