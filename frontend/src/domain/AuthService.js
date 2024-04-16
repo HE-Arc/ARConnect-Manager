@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ref } from 'vue';
+import { setCookie, getCookie, deleteAllCookies } from "./Cookies";
+import { User } from './User';
 
-export const authenticated = ref(document.cookie != null);
 
 /** Utility class to manage authentication and make requests to the API.*/
 export class AuthService {
@@ -9,15 +10,15 @@ export class AuthService {
 
     /**
      * Registers a new user.
-     * @param {string} email - The email of the user.
+     * @param {string} username - The username of the user.
      * @param {string} password - The password of the user.
      * @param {string} passwordConfirmation - The password confirmation.
      * 
      * @return {boolean} Wether the operation was successful.
      */
-    static async register(email, password, passwordConfirmation) {
+    static async register(username, password, passwordConfirmation) {
         let data = {
-            "username": email,
+            "username": username,
             "password1": password,
             "password2": passwordConfirmation,
         };
@@ -33,22 +34,20 @@ export class AuthService {
             return false;
         }
 
-        console.log(response);
-
         return response.status >= 200 && response.status < 300
 
     }
 
     /**
      * Logs in the user and saves the authentication token inside browser cookies.
-     * @param {string} email - The email of the user.
+     * @param {string} username - The username of the user.
      * @param {string} password - The password of the user.
      * 
      * @return {string} The authentication token that was saved.
      */
-    static async login(email, password) {
+    static async login(username, password) {
         let data = {
-            "username": email,
+            "username": username,
             "password": password,
         };
 
@@ -58,12 +57,21 @@ export class AuthService {
         )
 
         if (response.status < 200 || response.status >= 300) {
-            authenticated.value = false;
+            currentUser.value = null;
             return null;
         };
 
-        document.cookie = response.data.key
-        authenticated.value = true;
+        setCookie("authtoken", response.data.key, 1000000);
+        axios.defaults.headers['Authorization'] = `Token ${response.data.key}`;
+
+        const userResponse = await axios.get(`http://localhost:8000/api/user/`);
+        if (userResponse.status < 200 || userResponse.status >= 300) {
+            currentUser.value = null;
+            return null;
+        };
+
+
+        currentUser.value = new User(userResponse.data.user_info.isAdmin, userResponse.data.user_info.username);
 
         return response.data.key;
 
@@ -75,18 +83,13 @@ export class AuthService {
      * @return {string} Wether the operation was successful.
      */
     static async logout() {
-        const token = document.cookie;
         const response = await axios.post(
             `http://localhost:8000/api/user/logout/`,
-            {
-                headers: {
-                    "Authorization: Token": token,
-                }
-            }
         )
         if (response.status >= 200 && response.status < 300) {
-            document.cookie = null;
-            authenticated.value = false;
+            currentUser.value = null;
+            deleteAllCookies();
+            axios.defaults.headers['Authorization'] = null;
             return true;
         }
         return false;
@@ -94,6 +97,30 @@ export class AuthService {
 
     }
 
-
-
+    /**
+     * Gets the current user using the auth cookie.
+     * 
+     * If the cookie is not set, does nothing.
+     */
+    static async getUserFromCookie() {
+        const token = getCookie("authtoken");
+        if (token == null) return;
+        axios.defaults.headers['Authorization'] = `Token ${token}`;
+        try {
+            const response = await axios.get(`http://localhost:8000/api/user/`);
+            if (response.status < 200 || response.status >= 300) return;
+            return new User(response.data.user_info.isAdmin, response.data.user_info.username);
+        } catch {
+            return null;
+        }
+    }
 }
+
+
+/**
+ * A reactive value (Vue Reference) containing the current user.
+ * 
+ * This ref can be used in Vue components to modify the UI depending on 
+ * the current auth state or permission level.
+ */
+export const currentUser = ref(await AuthService.getUserFromCookie());

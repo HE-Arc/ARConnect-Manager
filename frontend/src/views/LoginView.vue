@@ -6,13 +6,13 @@ import { AuthService } from '@/domain/AuthService';
 const router = useRouter();
 const form = ref(null)
 
-const email = ref(null)
+const username = ref(null)
 const password = ref(null)
 
 const login = () => {
     if (!form.value.reportValidity()) return;
     AuthService.login(
-        email.value,
+        username.value,
         password.value,
     ).then((token) => {
         router.push({ name: "home" })
@@ -28,9 +28,9 @@ const login = () => {
             <h1>ARConnect</h1>
             <form method="post" ref="form">
                 <div class="form-row">
-                    <label for="email">Email :</label>
-                    <input id="email" type="email" name="email" placeholder="john.doe@example.com" v-model="email"
-                        required>
+                    <label for="username">Pseudo :</label>
+                    <input id="username" type="text" name="username" placeholder="john.doe@example.com"
+                        v-model="username" required>
                 </div>
                 <div class="form-row">
                     <label for="password">Mot de passe :</label>

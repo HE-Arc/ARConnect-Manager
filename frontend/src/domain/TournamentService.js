@@ -1,6 +1,7 @@
 import { Tournament } from "./Tournament";
 import { TournamentStatus } from "./TournamentStatus";
 import axios from 'axios';
+import { getCookie } from "./Cookies";
 
 /** Utility class to request the API on tournament items. */
 export class TournamentService {
@@ -46,14 +47,8 @@ export class TournamentService {
      * @return {boolean} Wether the deletion was successful.
      */
     static async deleteTournament(id) {
-        const token = document.cookie;
         const response = await axios.delete(
             `http://localhost:8000/api/tournaments/${id}`,
-            {
-                headers: {
-                    "Authorization: Token": token,
-                }
-            }
         );
         return response.status >= 200 && response.status < 300
     }
@@ -67,14 +62,10 @@ export class TournamentService {
      * @return {boolean} Wether the creation was successful.
      */
     static async addTournament(name, description, status) {
-        const token = document.cookie;
         let data = {
             "name": name,
             "description": description,
             "state": parseInt(status.id),
-            headers: {
-                "Authorization: Token": token,
-            }
         };
 
         const response = await axios.post(
@@ -92,14 +83,10 @@ export class TournamentService {
      * @return {boolean} Wether the update was successful.
      */
     static async updateTournament(tournament) {
-        const token = document.cookie;
         let data = {
             "name": tournament.name,
             "description": tournament.description,
             "state": parseInt(tournament.status.id),
-            headers: {
-                "Authorization: Token": token,
-            }
         };
 
         const response = await axios.put(
@@ -109,7 +96,4 @@ export class TournamentService {
 
         return response.status >= 200 && response.status < 300
     }
-
-
-
 }
