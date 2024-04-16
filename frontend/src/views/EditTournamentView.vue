@@ -89,6 +89,5 @@ form {
 
 button {
     grid-column: 3 / span 4;
-    height: 32px;
 }
 </style>
