@@ -46,7 +46,15 @@ export class TournamentService {
      * @return {boolean} Wether the deletion was successful.
      */
     static async deleteTournament(id) {
-        const response = await axios.delete(`http://localhost:8000/api/tournaments/${id}`);
+        const token = document.cookie;
+        const response = await axios.delete(
+            `http://localhost:8000/api/tournaments/${id}`,
+            {
+                headers: {
+                    "Authorization: Token": token,
+                }
+            }
+        );
         return response.status >= 200 && response.status < 300
     }
 
@@ -59,10 +67,14 @@ export class TournamentService {
      * @return {boolean} Wether the creation was successful.
      */
     static async addTournament(name, description, status) {
+        const token = document.cookie;
         let data = {
             "name": name,
             "description": description,
-            "state": parseInt(status.id)
+            "state": parseInt(status.id),
+            headers: {
+                "Authorization: Token": token,
+            }
         };
 
         const response = await axios.post(
@@ -80,10 +92,14 @@ export class TournamentService {
      * @return {boolean} Wether the update was successful.
      */
     static async updateTournament(tournament) {
+        const token = document.cookie;
         let data = {
             "name": tournament.name,
             "description": tournament.description,
-            "state": parseInt(tournament.status.id)
+            "state": parseInt(tournament.status.id),
+            headers: {
+                "Authorization: Token": token,
+            }
         };
 
         const response = await axios.put(
