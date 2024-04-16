@@ -20,3 +20,17 @@ class TournamentItemViewSet(viewsets.ModelViewSet):
     permission_classes = [TournamentPermission]
     
 
+class UserView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_info = {
+            'username': user.username,
+            'isAdmin': user.is_staff,
+        }
+            
+        content = {'user_info': user_info}
+        
+        return Response(content)
