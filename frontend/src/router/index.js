@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import TournamentsView from "@/views/TournamentsView.vue";
 import LoginView from "@/views/LoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 import TournamentDetailsView from "@/views/TournamentDetailsView.vue";
 import ManageTournamentsView from "@/views/ManageTournamentsView.vue";
 import AddTournamentView from "@/views/AddTournamentView.vue";
@@ -24,6 +25,11 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: RegisterView,
     },
     {
       path: "/tournaments/:tournamentId",

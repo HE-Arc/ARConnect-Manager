@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
-    "radix-vue": "^1.5.3",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
   },

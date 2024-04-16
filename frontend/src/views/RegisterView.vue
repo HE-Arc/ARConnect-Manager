@@ -6,17 +6,23 @@ import { AuthService } from '@/domain/AuthService';
 const router = useRouter();
 const form = ref(null)
 
-const email = ref(null)
-const password = ref(null)
+const email = ref(null);
+const password = ref(null);
+const passwordConfirmation = ref(null);
 
-const login = () => {
+const register = async () => {
     if (!form.value.reportValidity()) return;
-    AuthService.login(
+    const successful = await AuthService.register(
         email.value,
         password.value,
-    ).then((token) => {
-        router.push({ name: "home" })
-    })
+        passwordConfirmation.value
+    );
+
+    if (!successful) return;
+    const token = await AuthService.login(email.value, password.value);
+
+    if (token == null) return;
+    router.push({ name: "home" })
 };
 
 </script>
@@ -36,10 +42,16 @@ const login = () => {
                     <label for="password">Mot de passe :</label>
                     <input id="password" type="password" name="password" v-model="password" required></input>
                 </div>
+
+                <div class="form-row">
+                    <label for="password-confirmation">Confirmation :</label>
+                    <input id="password-confirmation" type="password" name="password-confirmation"
+                        v-model="passwordConfirmation" required></input>
+                </div>
             </form>
-            <button class="btn-primary" @click="login">Connexion</button>
+            <button class="btn-primary" @click="register">Créer un compte</button>
             <hr>
-            <p>Pas de compte ? <router-link :to="{ name: 'register' }">S'inscrire</router-link></p>
+            <p>Déjà inscrit ? <router-link :to="{ name: 'login' }">Se connecter</router-link></p>
         </div>
     </div>
 </template>
