@@ -3,7 +3,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 from dj_rest_auth.registration.views import RegisterView
-from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
+from dj_rest_auth.views import LoginView, LogoutView
 
 router = DefaultRouter()
 router.register(r'tournaments', views.TournamentItemViewSet, basename='tournamentitem')
