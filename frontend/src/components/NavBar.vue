@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { authenticated, AuthService } from '@/domain/AuthService';
+import { currentUser, AuthService } from '@/domain/AuthService';
 
 const isActive = ref(false);
 
@@ -21,9 +21,9 @@ const logout = () => {
       <router-link id="home-link" :to="{ name: 'home' }"><img src="@/assets/images/logo_white_text.svg"></router-link>
     </div>
     <div id="navbar-links">
-      <router-link :to="{ name: 'manageTournaments' }">Administration</router-link>
+      <router-link v-if="currentUser && currentUser.isAdmin" :to="{ name: 'manageTournaments' }">Administration</router-link>
       <router-link :to="{ name: 'tournaments' }">Tournois</router-link>
-      <button v-if="authenticated" class="btn-primary" @click="logout">Se déconnecter</button>
+      <button v-if="currentUser" class="btn-primary" @click="logout">Se déconnecter</button>
       <router-link v-else class="btn-primary" :to="{ name: 'login' }">Se connecter</router-link>
     </div>
     <div id="hamburger-menu" class="material-symbols-outlined hidden" @click="toggleMenu">
