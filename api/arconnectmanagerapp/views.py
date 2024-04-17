@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework import viewsets
 from .models import TournamentItem
 from .serializers import TournamentItemSerializer
@@ -9,6 +10,8 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
+from rest_framework.decorators import action
+from rest_framework import status
 
 
 class TournamentItemViewSet(viewsets.ModelViewSet):
@@ -18,6 +21,21 @@ class TournamentItemViewSet(viewsets.ModelViewSet):
     queryset = TournamentItem.objects.all()
     serializer_class = TournamentItemSerializer
     permission_classes = [TournamentPermission]
+    
+    @action(detail=True, methods=['post'])
+    def register(self, request, pk=None):
+        tournament = self.get_object()
+        tournament.players.add(request.user)
+        
+        return HttpResponse(status=204)
+    
+    @action(detail=True, methods=['post'])
+    def unregister(self, request, pk=None):
+        tournament = self.get_object()
+        tournament.players.remove(request.user)
+        
+        return HttpResponse(status=204)
+    
     
 
 class UserView(APIView):
