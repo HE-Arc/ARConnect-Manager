@@ -10,5 +10,7 @@ class TournamentItem(models.Model):
             default=0,
             validators=[MinValueValidator(0), MaxValueValidator(3)]
         )                       
+    players = models.ManyToManyField(User, related_name='players')
+    
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
