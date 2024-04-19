@@ -27,14 +27,14 @@ class TournamentItemViewSet(viewsets.ModelViewSet):
         tournament = self.get_object()
         tournament.players.add(request.user)
         
-        return HttpResponse(status=204)
+        return HttpResponse(status=204) #OK NO CONTENT
     
     @action(detail=True, methods=['post'])
     def unregister(self, request, pk=None):
         tournament = self.get_object()
         tournament.players.remove(request.user)
         
-        return HttpResponse(status=204)
+        return HttpResponse(status=204) #OK NO CONTENT
     
     
 
@@ -47,6 +47,7 @@ class UserView(APIView):
         user_info = {
             'username': user.username,
             'isAdmin': user.is_staff,
+            'tournaments': user.players.all().values_list('pk', flat=True)
         }
             
         content = {'user_info': user_info}
