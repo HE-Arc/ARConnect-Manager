@@ -96,4 +96,14 @@ export class TournamentService {
 
         return response.status >= 200 && response.status < 300
     }
+
+    static async registerForTournament(tournamentId) {
+        const response = await axios.post(
+            `http://localhost:8000/api/tournaments/${tournamentId}/register/`,
+            null
+        ) 
+        return { success: response.status >= 200 && response.status < 300, message: "Registration successful" };
+        } catch (error) {
+            return { success: false, message: "Registration failed" };
+    }
 }
