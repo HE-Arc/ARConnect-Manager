@@ -1,6 +1,7 @@
 import { Tournament } from "./Tournament";
 import { TournamentStatus } from "./TournamentStatus";
 import axios from 'axios';
+import { getCookie } from "./Cookies";
 
 /** Utility class to request the API on tournament items. */
 export class TournamentService {
@@ -46,7 +47,9 @@ export class TournamentService {
      * @return {boolean} Wether the deletion was successful.
      */
     static async deleteTournament(id) {
-        const response = await axios.delete(`http://localhost:8000/api/tournaments/${id}`);
+        const response = await axios.delete(
+            `http://localhost:8000/api/tournaments/${id}`,
+        );
         return response.status >= 200 && response.status < 300
     }
 
@@ -62,7 +65,7 @@ export class TournamentService {
         let data = {
             "name": name,
             "description": description,
-            "state": parseInt(status.id)
+            "state": parseInt(status.id),
         };
 
         const response = await axios.post(
@@ -83,7 +86,7 @@ export class TournamentService {
         let data = {
             "name": tournament.name,
             "description": tournament.description,
-            "state": parseInt(tournament.status.id)
+            "state": parseInt(tournament.status.id),
         };
 
         const response = await axios.put(
@@ -93,7 +96,4 @@ export class TournamentService {
 
         return response.status >= 200 && response.status < 300
     }
-
-
-
 }

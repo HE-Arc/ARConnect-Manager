@@ -1,5 +1,4 @@
 <script setup>
-import { Label } from 'radix-vue'
 import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { TournamentService } from '@/domain/TournamentService';
@@ -12,9 +11,9 @@ const route = useRoute();
 const tournamentId = route.params.tournamentId;
 
 
-const name = ref("");
-const description = ref("");
-const state = ref(0);
+const name = ref(null);
+const description = ref(null);
+const state = ref(null);
 
 onMounted(async () => {
     const tournament = await TournamentService.getTournamentById(tournamentId);
@@ -43,14 +42,14 @@ const editTournament = () => {
     <div class="grid-container">
         <h1>Modifier un tournoi</h1>
         <form action="http://localhost:8000/api/tournaments/ " method="post" ref="form">
-            <Label for="name">Nom du tournoi :</Label>
+            <label for="name">Nom du tournoi :</label>
             <input id="name" type="text" name="name" placeholder="Free For All" v-model="name" required>
 
-            <Label for="description">Description :</Label>
+            <label for="description">Description :</label>
             <textarea id="description" placeholder="60 joueurs, 5 jeux, un seul vainqueur..." name="description"
                 v-model="description" required></textarea>
 
-            <Label for="state">État :</Label>
+            <label for="state">État :</label>
             <select id="state" v-model="state" required name="state">
                 <option value=0>Fermé</option>
                 <option value=1>Ouvert</option>
@@ -85,12 +84,10 @@ form {
     textarea,
     select {
         grid-column: 3 / span 4;
-        height: 32px;
     }
 }
 
 button {
     grid-column: 3 / span 4;
-    height: 32px;
 }
 </style>
