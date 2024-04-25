@@ -25,6 +25,9 @@ class TournamentItemViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def register(self, request, pk=None):
         tournament = self.get_object()
+        if tournament.state != 1:
+            return HttpResponse('The tournament is not open to registration modification', status=403)
+        
         tournament.players.add(request.user)
         
         return HttpResponse(status=204) #OK NO CONTENT
@@ -33,6 +36,8 @@ class TournamentItemViewSet(viewsets.ModelViewSet):
     def unregister(self, request, pk=None):
         tournament = self.get_object()
         tournament.players.remove(request.user)
+        if tournament.state != 1:
+            return HttpResponse('The tournament is not open to registration modification', status=403)
         
         return HttpResponse(status=204) #OK NO CONTENT
     
