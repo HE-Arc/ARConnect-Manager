@@ -2,16 +2,21 @@
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { TournamentService } from '@/domain/TournamentService';
+import { TournamentStatus } from '@/domain/TournamentStatus'; 
+
 import { currentUser } from '@/domain/AuthService';
 
 const route = useRoute();
 const tournamentId = route.params.tournamentId;
 const tournament = ref(null);
 const isRegistered = ref(false);
+const isTournamentOpen = ref(false);
 
 onMounted(async () => {
     tournament.value = await TournamentService.getTournamentById(tournamentId);
     isRegistered.value = currentUser.value.tournamentsId.includes(tournament.value.id);
+   
+    isTournamentOpen.value = tournament.value.status.id === TournamentStatus.Open.id;
 });
 
 const register = async () => {
@@ -20,12 +25,10 @@ const register = async () => {
     } else {
         const registrationResult = await TournamentService.registerForTournament(tournamentId);
         if (registrationResult.success) {
-            // Inscription réussie, afficher le message de succès
-            alert(registrationResult.message);
+            //alert(registrationResult.message);
             isRegistered.value = true;
         } else {
-            // Inscription échouée, afficher le message d'erreur
-            alert(registrationResult.message);
+            //alert(registrationResult.message); mais mieux
         }
     }
 };
@@ -33,23 +36,28 @@ const register = async () => {
 const unregister = async () => {
     const unregistrationResult = await TournamentService.unregisterFromTournament(tournamentId);
     if (unregistrationResult.success) {
-        // Désinscription réussie, afficher le message de succès
-        alert(unregistrationResult.message);     
+        //alert(unregistrationResult.message);     
         isRegistered.value = false;   
     } else {
-        // Désinscription échouée, afficher le message d'erreur
-        alert(unregistrationResult.message);
+        //alert(unregistrationResult.message);
     }
 };
 
 </script>
 <template>
-    <div v-if="tournament" class="grid-container">
+<div v-if="tournament" class="grid-container">
     <h1>{{ tournament.name }}</h1>
     <p>{{ tournament.description }}</p>
     <p>{{ tournament.status }}</p>
-    <button v-if="isRegistered" class="btn-primary" @click="register">Se désinscrire</button>
-    <button v-else class="btn-primary" @click="register">S'inscrire</button>
+
+
+    <div v-if="isTournamentOpen">
+        <button v-if="isRegistered" class="btn-primary" @click="register">Se désinscrire</button>
+        <button v-else class="btn-primary" @click="register">S'inscrire</button>
+    </div>
+    <div v-else>
+        <button class="btn-primary" disabled>Le tournoi est fermé</button>
+    </div>
 </div>
 
 </template>
@@ -58,4 +66,10 @@ const unregister = async () => {
 .grid-container * {
     grid-column: 1 / span 12;
 }
+
+.btn-primary {
+    grid-column: 4 / span 12;
+   
+}
+
 </style>

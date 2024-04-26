@@ -22,6 +22,17 @@ body {
   text-transform: uppercase;
   font-weight: 600;
   -webkit-line-clamp: 1;
+
+  &:disabled {
+    background-color: $primary-disabled;
+    color: $on-primary-disabled;
+
+    &:hover {
+      background-color: $primary-disabled;
+      color: $on-primary-disabled;
+      cursor: not-allowed;
+    }
+  }
 }
 
 .grid-container {
