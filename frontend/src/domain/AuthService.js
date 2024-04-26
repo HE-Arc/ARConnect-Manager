@@ -70,8 +70,7 @@ export class AuthService {
             return null;
         };
 
-
-        currentUser.value = new User(userResponse.data.user_info.isAdmin, userResponse.data.user_info.username);
+        currentUser.value = new User(userResponse.data.user_info.isAdmin, userResponse.data.user_info.username, userResponse.data.user_info.tournaments);
 
         return response.data.key;
 
@@ -109,7 +108,7 @@ export class AuthService {
         try {
             const response = await axios.get(`http://localhost:8000/api/user/`);
             if (response.status < 200 || response.status >= 300) return;
-            return new User(response.data.user_info.isAdmin, response.data.user_info.username);
+            return new User(response.data.user_info.isAdmin, response.data.user_info.username, response.data.user_info.tournaments);
         } catch {
             return null;
         }
