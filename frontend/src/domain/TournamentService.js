@@ -106,4 +106,14 @@ export class TournamentService {
         } catch (error) {
             return { success: false, message: "Registration failed" };
     }
+
+    static async unregisterFromTournament(tournamentId) {
+        const response = await axios.post(
+            `http://localhost:8000/api/tournaments/${tournamentId}/unregister/`,
+            null
+        ) 
+        return { success: response.status >= 200 && response.status < 300, message: "Unregistration successful" };
+        } catch (error) {
+            return { success: false, message: "Unregistration failed" };
+    }
 }
