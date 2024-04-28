@@ -7,3 +7,5 @@ django-rest-framework==0.1.0
 djangorestframework==3.15.0
 sqlparse==0.4.4
 tzdata==2024.1
+
+challonge==1.11.5 # for Challonge API
