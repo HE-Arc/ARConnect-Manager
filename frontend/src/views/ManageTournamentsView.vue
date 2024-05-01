@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { TournamentService } from '@/domain/TournamentService';
 import { useRouter } from 'vue-router';
+import { TournamentStatus } from '../domain/TournamentStatus';
 
 const router = useRouter();
 const tournaments = ref([]);
@@ -21,7 +22,8 @@ function addTournament() {
     router.push({ name: "addTournament" })
 }
 
-function nextTournamentStatus(tournament) { 
+function nextTournamentStatus(tournament) {
+    if (tournament.status.id == TournamentStatus.Completed.id) return;
     TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
         const index = tournaments.value.indexOf(tournament);
         tournaments.value[index].status = newStatus;
@@ -57,7 +59,8 @@ onMounted(async () => {
                     {{ (tournament.status) }}
                 </div>
                 <div>
-                    <span @click="nextTournamentStatus(tournament)"  class="material-symbols-outlined">
+                    <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }">
                         next_plan
                     </span>
                     <span @click="deleteTournament(tournament.id)" class="material-symbols-outlined">
@@ -135,9 +138,19 @@ h1 {
             display: flex;
             justify-content: space-around;
             align-items: center;
+            -webkit-user-select: none;
+            /* Safari */
+            -ms-user-select: none;
+            /* IE 10 and IE 11 */
+            user-select: none;
+            /* Standard syntax */
 
             span:hover {
                 cursor: pointer;
+            }
+
+            span.disabled:hover {
+                cursor: not-allowed;
             }
 
         }
