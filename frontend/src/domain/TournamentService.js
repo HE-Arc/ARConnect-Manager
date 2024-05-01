@@ -1,7 +1,6 @@
 import { Tournament } from "./Tournament";
 import { TournamentStatus } from "./TournamentStatus";
 import axios from 'axios';
-import { getCookie } from "./Cookies";
 
 /** Utility class to request the API on tournament items. */
 export class TournamentService {
@@ -20,6 +19,8 @@ export class TournamentService {
                 tournamentData.name,
                 tournamentData.description,
                 TournamentStatus.fromId(tournamentData.state),
+                tournamentData.players ?? null,
+                tournamentData.challonge_image_url ?? null,
             )
         )
     }
@@ -37,6 +38,8 @@ export class TournamentService {
             response.data.name,
             response.data.description,
             TournamentStatus.fromId(response.data.state),
+            response.data.players ?? null,
+            response.data.challonge_image_url ?? null,
         );
 
     }
@@ -61,11 +64,10 @@ export class TournamentService {
      * 
      * @return {boolean} Wether the creation was successful.
      */
-    static async addTournament(name, description, status) {
+    static async addTournament(name, description) {
         let data = {
             "name": name,
             "description": description,
-            "state": parseInt(status.id),
         };
 
         const response = await axios.post(
@@ -86,7 +88,6 @@ export class TournamentService {
         let data = {
             "name": tournament.name,
             "description": tournament.description,
-            "state": parseInt(tournament.status.id),
         };
 
         const response = await axios.put(
@@ -101,19 +102,50 @@ export class TournamentService {
         const response = await axios.post(
             `http://localhost:8000/api/tournaments/${tournamentId}/register/`,
             null
-        ) 
+        )
         return { success: response.status >= 200 && response.status < 300, message: "Registration successful" };
-        } catch (error) {
-            return { success: false, message: "Registration failed" };
+    } catch(error) {
+        return { success: false, message: "Registration failed" };
     }
 
     static async unregisterFromTournament(tournamentId) {
         const response = await axios.post(
             `http://localhost:8000/api/tournaments/${tournamentId}/unregister/`,
             null
-        ) 
+        )
         return { success: response.status >= 200 && response.status < 300, message: "Unregistration successful" };
-        } catch (error) {
-            return { success: false, message: "Unregistration failed" };
+    } catch(error) {
+        return { success: false, message: "Unregistration failed" };
+    }
+
+    /**
+     * Updates a tournament status by entering the next phase.
+     * @param {Tournament} tournament - The tournament.
+     * 
+     * @return {TournamentStatus} The updated tournament status.
+     */
+    static async nextTournamentStatus(tournament) {
+        let endpoint;
+        let resultStatus = tournament.status;
+        switch (tournament.status.id) {
+            case TournamentStatus.Closed.id:
+                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/open_registration/`
+                resultStatus = TournamentStatus.Open;
+                break;
+            case TournamentStatus.Open.id:
+                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/start/`
+                 resultStatus = TournamentStatus.Running;
+                break;
+            case TournamentStatus.Running.id:
+                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/finish/`
+                resultStatus = TournamentStatus.Completed;
+                break;
+            case TournamentStatus.Completed.id:
+                throw new Error("Operation not permited. A completed tournament cannot change status.");
+            default:
+                throw new Error(`Tournament status unkown: ${tournament.status}`);
+        }
+        const response = await axios.post(endpoint)
+        return resultStatus;
     }
 }

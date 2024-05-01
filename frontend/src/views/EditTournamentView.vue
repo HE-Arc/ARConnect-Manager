@@ -13,13 +13,11 @@ const tournamentId = route.params.tournamentId;
 
 const name = ref(null);
 const description = ref(null);
-const state = ref(null);
 
 onMounted(async () => {
     const tournament = await TournamentService.getTournamentById(tournamentId);
     name.value = tournament.name;
     description.value = tournament.description;
-    state.value = tournament.status.id;
 });
 
 
@@ -29,8 +27,8 @@ const editTournament = () => {
     const newTournament = new Tournament(
         tournamentId,
         name.value,
-        description.value,
-        TournamentStatus.fromId(parseInt(state.value)));
+        description.value
+    );
 
     TournamentService.updateTournament(newTournament).then((successful) => {
         if (successful) router.push({ name: "manageTournaments" });
@@ -48,14 +46,6 @@ const editTournament = () => {
             <label for="description">Description :</label>
             <textarea id="description" placeholder="60 joueurs, 5 jeux, un seul vainqueur..." name="description"
                 v-model="description" required></textarea>
-
-            <label for="state">État :</label>
-            <select id="state" v-model="state" required name="state">
-                <option value=0>Fermé</option>
-                <option value=1>Ouvert</option>
-                <option value=2>En cours</option>
-                <option value=3>Terminé</option>
-            </select>
         </form>
         <button class="btn-primary" @click="editTournament">Modifier</button>
     </div>

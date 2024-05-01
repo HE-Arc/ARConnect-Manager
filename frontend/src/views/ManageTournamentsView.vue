@@ -21,6 +21,13 @@ function addTournament() {
     router.push({ name: "addTournament" })
 }
 
+function nextTournamentStatus(tournament) { 
+    TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
+        const index = tournaments.value.indexOf(tournament);
+        tournaments.value[index].status = newStatus;
+    });
+}
+
 onMounted(async () => {
     tournaments.value = await TournamentService.getAllTournaments();
 });
@@ -46,8 +53,13 @@ onMounted(async () => {
             <div v-for="(tournament, index) in tournaments" class="tournament-item">
                 <div>{{ tournament.name }}</div>
                 <div>{{ tournament.description }}</div>
-                <div>{{ (tournament.status) }}</div>
                 <div>
+                    {{ (tournament.status) }}
+                </div>
+                <div>
+                    <span @click="nextTournamentStatus(tournament)"  class="material-symbols-outlined">
+                        next_plan
+                    </span>
                     <span @click="deleteTournament(tournament.id)" class="material-symbols-outlined">
                         delete
                     </span>
@@ -107,6 +119,15 @@ h1 {
 
         & div:nth-child(3) {
             grid-column: span 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            gap: 8px;
+
+            span {
+                cursor: pointer;
+            }
         }
 
         & div:nth-child(4) {

@@ -9,14 +9,12 @@ const form = ref(null)
 
 const name = ref(null);
 const description = ref(null);
-const state = ref(null);
 
 const addTournament = () => {
     if (!form.value.reportValidity()) return;
     TournamentService.addTournament(
         name.value,
         description.value,
-        TournamentStatus.fromId(parseInt(state.value))
     ).then(() => {
         router.push({ name: "manageTournaments" })
     })
@@ -33,14 +31,6 @@ const addTournament = () => {
             <label for="description">Description :</label>
             <textarea id="description" placeholder="60 joueurs, 5 jeux, un seul vainqueur..." name="description"
                 v-model="description" required></textarea>
-
-            <label for="state">État :</label>
-            <select id="state" v-model="state" required name="state">
-                <option value="0">Fermé</option>
-                <option value="1">Ouvert</option>
-                <option value="2">En cours</option>
-                <option value="3">Terminé</option>
-            </select>
         </form>
         <button class="btn-primary" @click="addTournament">Ajouter</button>
     </div>
