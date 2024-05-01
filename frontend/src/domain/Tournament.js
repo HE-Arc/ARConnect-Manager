@@ -4,7 +4,7 @@ import { TournamentStatus } from "./TournamentStatus";
 export class Tournament {
 
     /**
-     * Create a point.
+     * Create a tournament.
      * @param {number} id - The ID of the tournament.
      * @param {string} name - The name of the tournament.
      * @param {string} description - The description of the tournament.

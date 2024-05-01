@@ -1,4 +1,5 @@
 import { Tournament } from "./Tournament";
+import { Match } from "./Match";
 import { TournamentStatus } from "./TournamentStatus";
 import axios from 'axios';
 
@@ -134,7 +135,7 @@ export class TournamentService {
                 break;
             case TournamentStatus.Open.id:
                 endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/start/`
-                 resultStatus = TournamentStatus.Running;
+                resultStatus = TournamentStatus.Running;
                 break;
             case TournamentStatus.Running.id:
                 endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/finish/`
@@ -147,5 +148,57 @@ export class TournamentService {
         }
         const response = await axios.post(endpoint)
         return resultStatus;
+    }
+
+    /**
+    * Returns a tournament's matches. The tournament must be in the "running" state.
+    * @param {number} tournamentId - The tournament ID.
+    * 
+    * @return {TournamentStatus} The updated tournament status.
+    */
+    static async getMatchesByTournamentId(tournamentId) {
+        const response = await axios.post(`http://localhost:8000/api/tournaments/${tournamentId}/matches/`);
+        if (response.status < 200 || response.status > 299) return;
+        return response.data.map(
+            (matchData) => new Match(
+                parseInt(matchData.id),
+                parseInt(matchData.round),
+                matchData.scores_csv,
+                matchData.state,
+                parseInt(matchData.player1_id),
+                parseInt(matchData.player2_id),
+                parseInt(matchData.winner_id ?? -1),
+                matchData.player1_name,
+                matchData.player2_name,
+            )
+        ).sort((a, b) => b - a)
+    }
+
+    /**
+   * Sends a match result.
+   * @param {number} tournamentId - The ID of the match.
+   * @param {number} matchId - The ID of the match.
+   * @param {number} player1Id - The ID of player 1.
+   * @param {number} player2Id - The ID of player 2.
+   * @param {number} player1Score - The score of player 1.
+   * @param {number} player2Score - The score of player 2.
+   * 
+   * @return {boolean} Whether the update was successful.
+   */
+    static async sendMatchResult(tournamentId, matchId, player1Id, player2Id, player1Score, player2Score) {
+        let data = {
+            "match_id": matchId.toString(),
+            "player1_id": player1Id.toString(),
+            "player2_id": player2Id.toString(),
+            "score_p1": player1Score,
+            "score_p2": player2Score,
+        };
+
+        const response = await axios.post(
+            `http://localhost:8000/api/tournaments/${tournamentId}/scores/`,
+            data
+        )
+
+        return response.status >= 200 && response.status < 300
     }
 }
