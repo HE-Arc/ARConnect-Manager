@@ -45,10 +45,11 @@ set :repo_url, "https://github.com/HE-Arc/ARConnect-Manager.git"
 # Créer un lien symbolique vers le fichier .env dans le répertoire current/backend
 after 'deploy:symlink:release', 'deploy:create_env_symlink'
 namespace :deploy do
-    desc 'Create symlink for .env file'
+    desc 'Create symlink for .env files'
     task :create_env_symlink do
       on roles(:app) do
-        execute "ln -sf #{shared_path}/.env #{release_path}/api/.env"
+        execute "ln -sf #{shared_path}/.env-api #{release_path}/api/.env"
+        execute "ln -sf #{shared_path}/.env-frontend #{release_path}/frontend/.env"
       end
     end
   end
