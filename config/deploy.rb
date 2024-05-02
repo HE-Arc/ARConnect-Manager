@@ -48,7 +48,6 @@ namespace :deploy do
     on roles(:app) do
       execute "ln -sf #{shared_path}/.env-api #{release_path}/api/.env"
       execute "ln -sf #{shared_path}/.env-frontend #{release_path}/frontend/.env"
-      execute "ln -sf #{shared_path}/.env-frontend #{release_path}/frontend/.env.production"
     end
   end
 
@@ -86,6 +85,7 @@ task :deploy do
   on roles(:app) do
     within release_path.join('frontend') do
       execute :npm, 'install' # Installer les dépendances npm
+      execute :sudo, 'rm -rf dist' # Supprimer ancien build de l'application
       execute :npm, 'run build' # Construire l'application Vue.js
     end
   end
