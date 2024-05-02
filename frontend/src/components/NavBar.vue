@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, resolveDirective } from 'vue';
 import { currentUser, AuthService } from '@/domain/AuthService';
 
 const isActive = ref(false);
@@ -11,6 +11,7 @@ const toggleMenu = () => {
 
 const logout = () => {
   AuthService.logout();
+  location.replace('/home');
 }
 
 </script>

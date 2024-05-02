@@ -7,7 +7,7 @@ const tournaments = ref([]);
 
 onMounted(async () => {
     tournaments.value = await TournamentService.getAllTournaments()
-};
+});
 
 </script>
 
