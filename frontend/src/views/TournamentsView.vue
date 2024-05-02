@@ -1,18 +1,13 @@
 <script setup>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import TournamentPreview from '../components/TournamentPreview.vue';
+import TournamentPreview from '@/components/TournamentPreview.vue';
+import { TournamentService } from '@/domain/TournamentService';
 
 const tournaments = ref([]);
 
-const fetchTournaments = async () => {
-    const res = await axios.get("https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments");
-    tournaments.value = res.data;
+onMounted(async () => {
+    tournaments.value = await TournamentService.getAllTournaments()
 };
-
-onMounted(() => {
-    fetchTournaments();
-});
 
 </script>
 

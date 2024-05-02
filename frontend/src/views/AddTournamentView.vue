@@ -1,27 +1,20 @@
 <script setup>
-import { Label } from 'radix-vue'
-import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { TournamentService } from '@/domain/TournamentService';
+import { TournamentStatus } from '@/domain/TournamentStatus';
 
 const router = useRouter();
 const form = ref(null)
 
-let name;
-let description;
-let state;
+const name = ref(null);
+const description = ref(null);
 
 const addTournament = () => {
     if (!form.value.reportValidity()) return;
-    let data = {
-        "name": name,
-        "description": description,
-        "state": parseInt(state)
-    };
-
-    axios.post(
-        "https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments/ ",
-        data
+    TournamentService.addTournament(
+        name.value,
+        description.value,
     ).then(() => {
         router.push({ name: "manageTournaments" })
     })
@@ -32,20 +25,12 @@ const addTournament = () => {
     <div class="grid-container">
         <h1>Ajouter un tournoi</h1>
         <form ref="form">
-            <Label for="name">Nom du tournoi :</Label>
+            <label for="name">Nom du tournoi :</label>
             <input id="name" type="text" name="name" placeholder="Free For All" v-model="name" required>
 
-            <Label for="description">Description :</Label>
+            <label for="description">Description :</label>
             <textarea id="description" placeholder="60 joueurs, 5 jeux, un seul vainqueur..." name="description"
                 v-model="description" required></textarea>
-
-            <Label for="state">État :</Label>
-            <select id="state" v-model="state" required name="state">
-                <option value="0">Fermé</option>
-                <option value="1">Ouvert</option>
-                <option value="2">En cours</option>
-                <option value="3">Terminé</option>
-            </select>
         </form>
         <button class="btn-primary" @click="addTournament">Ajouter</button>
     </div>
@@ -76,13 +61,11 @@ form {
     textarea,
     select {
         grid-column: 3 / span 4;
-        height: 32px;
     }
 }
 
 button {
     grid-column: 3 / span 4;
-    height: 32px;
 }
 
 @media(max-width: $medium-breakpoint) {

@@ -1,37 +1,82 @@
 <script setup>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import TournamentPreview from '../components/TournamentPreview.vue';
+import { TournamentService } from '@/domain/TournamentService';
 import { useRouter } from 'vue-router';
+import { TournamentStatus } from '../domain/TournamentStatus';
 
 const router = useRouter();
-
 const tournaments = ref([]);
 
-const fetchTournaments = async () => {
-    const res = await axios.get("https://api-arconnect.k8s.ing.he-arc.ch/api/tournaments");
-    tournaments.value = res.data;
-};
+function deleteTournament(id,name) {
+    let text = prompt("Êtes-vous sûr de vouloir supprimer le tournoi ?\nSi oui, tapez \"" + name + "\" pour confirmer");
 
-function navigateToTournamentDetails() {
+    if(text ==name){
+        
+        TournamentService.deleteTournament(id).then((successful) => {
+            if (!successful) return;
+            tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
+            });
+    }
+   
+}
+
+function editTournament(id) {
+    router.push({ name: "editTournament", params: { tournamentId: id } })
+}
+
+function addTournament() {
     router.push({ name: "addTournament" })
 }
 
-onMounted(() => {
-    fetchTournaments();
+function nextTournamentStatus(tournament) {
+    if (tournament.status.id == TournamentStatus.Completed.id) return;
+    TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
+        const index = tournaments.value.indexOf(tournament);
+        tournaments.value[index].status = newStatus;
+    });
+}
+
+onMounted(async () => {
+    tournaments.value = await TournamentService.getAllTournaments();
 });
 
 </script>
 
 <template>
     <div class="grid-container">
-        <h1>Gérer les tournois</h1>
+        <h1>
+            Gérer les tournois
+            <span @click="addTournament" class="material-symbols-outlined">
+                add
+            </span>
+        </h1>
+
         <div class="container">
-            <TournamentPreview v-for="(tournament, index) in tournaments" :tournament :key="index" class="item" />
-            <div class="item" id="add-button" @click="navigateToTournamentDetails">
-                <span class="material-symbols-outlined">
-                    add
-                </span>
+            <div class="tournament-headers">
+                <div>Nom</div>
+                <div>Description</div>
+                <div>Status</div>
+                <div></div>
+            </div>
+            <div v-for="(tournament, index) in tournaments" class="tournament-item">
+                <div>{{ tournament.name }}</div>
+                <div>{{ tournament.description }}</div>
+                <div>
+                    {{ (tournament.status) }}
+                </div>
+                <div>
+                    <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }">
+                        next_plan
+                    </span>
+                    <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined">
+                        delete
+                    </span>
+                    <span @click="editTournament(tournament.id)" class="material-symbols-outlined">
+                        edit
+                    </span>
+                </div>
+                <hr>
             </div>
         </div>
     </div>
@@ -39,26 +84,99 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/breakpoints";
+@import "@/assets/styles/colors";
 
 h1 {
     grid-column: 1 / span 12;
     grid-row: 1 / span 1;
     margin-bottom: 16px;
+
+    span {
+        cursor: pointer;
+        margin-left: 16px;
+    }
+
 }
 
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    gap: 8px;
     grid-column: 1 / span 12;
     grid-row: 2 / span 1;
-}
 
-.item {
-    width: calc(25% - (3 * 8px / 4));
-    min-width: 200px;
-    aspect-ratio: 16 / 9;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+
+    gap: 8px;
+
+    background-color: $surface;
+
+    padding: 32px;
+    border-radius: 16px;
+
+    .tournament-item,
+    .tournament-headers {
+        grid-column: 1 / span 12;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+
+        & div:nth-child(1) {
+            grid-column: span 3;
+        }
+
+        & div:nth-child(2) {
+            grid-column: span 7;
+        }
+
+        & div:nth-child(3) {
+            grid-column: span 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            gap: 8px;
+
+            span {
+                cursor: pointer;
+            }
+        }
+
+        & div:nth-child(4) {
+            grid-column: span 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            -webkit-user-select: none;
+            /* Safari */
+            -ms-user-select: none;
+            /* IE 10 and IE 11 */
+            user-select: none;
+            /* Standard syntax */
+
+            span:hover {
+                cursor: pointer;
+            }
+
+            span.disabled:hover {
+                cursor: not-allowed;
+            }
+
+        }
+
+        hr {
+            grid-column: span 12;
+            width: 100%;
+            color: $surface;
+        }
+
+        &:last-child {
+            hr {
+                display: none;
+            }
+        }
+    }
+
+    .tournament-headers {
+        font-size: 1.4rem;
+    }
 }
 
 #add-button {

@@ -1,11 +1,18 @@
 <script setup>
 import { ref } from 'vue';
-let isActive = ref(false);
+import { currentUser, AuthService } from '@/domain/AuthService';
+
+const isActive = ref(false);
 
 const toggleMenu = () => {
   alert("Sorry! The mobile menu hasn't been implemented yet.\nCome back later or use a desktop.")
   isActive.value = !isActive.value;
 }
+
+const logout = () => {
+  AuthService.logout();
+}
+
 </script>
 
 <template>
@@ -14,9 +21,10 @@ const toggleMenu = () => {
       <router-link id="home-link" :to="{ name: 'home' }"><img src="@/assets/images/logo_white_text.svg"></router-link>
     </div>
     <div id="navbar-links">
-      <router-link :to="{ name: 'manageTournaments' }">Administration</router-link>
+      <router-link v-if="currentUser && currentUser.isAdmin" :to="{ name: 'manageTournaments' }">Administration</router-link>
       <router-link :to="{ name: 'tournaments' }">Tournois</router-link>
-      <router-link class="btn-primary" :to="{ name: 'login' }">Se connecter</router-link>
+      <button v-if="currentUser" class="btn-primary" @click="logout">Se déconnecter</button>
+      <router-link v-else class="btn-primary" :to="{ name: 'login' }">Se connecter</router-link>
     </div>
     <div id="hamburger-menu" class="material-symbols-outlined hidden" @click="toggleMenu">
       menu

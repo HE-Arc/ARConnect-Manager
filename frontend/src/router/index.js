@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import TournamentsView from "@/views/TournamentsView.vue";
 import LoginView from "@/views/LoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 import TournamentDetailsView from "@/views/TournamentDetailsView.vue";
 import ManageTournamentsView from "@/views/ManageTournamentsView.vue";
 import AddTournamentView from "@/views/AddTournamentView.vue";
+import EditTournamentView from "@/views/EditTournamentView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +27,11 @@ const router = createRouter({
       component: LoginView,
     },
     {
+      path: "/register",
+      name: "register",
+      component: RegisterView,
+    },
+    {
       path: "/tournaments/:tournamentId",
       name: "tournamentDetails",
       component: TournamentDetailsView,
@@ -38,6 +45,11 @@ const router = createRouter({
       path: "/admin/tournaments/new",
       name: "addTournament",
       component: AddTournamentView,
+    },
+    {
+      path: "/admin/tournaments/:tournamentId",
+      name: "editTournament",
+      component: EditTournamentView,
     },
     {
       path: '/:pathMatch(.*)*',

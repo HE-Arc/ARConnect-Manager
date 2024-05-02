@@ -7,7 +7,7 @@ body {
   color: $background;
   padding: 0;
   margin: 0;
-  background-color: #121212;
+  background-color: $background;
   overflow-x: hidden;
   color: white;
 }
@@ -22,6 +22,17 @@ body {
   text-transform: uppercase;
   font-weight: 600;
   -webkit-line-clamp: 1;
+
+  &:disabled {
+    background-color: $primary-disabled;
+    color: $on-primary-disabled;
+
+    &:hover {
+      background-color: $primary-disabled;
+      color: $on-primary-disabled;
+      cursor: not-allowed;
+    }
+  }
 }
 
 .grid-container {
@@ -31,6 +42,10 @@ body {
   padding-left: 3%;
   padding-right: 3%;
   grid-template-columns: repeat(12, 1fr);
+}
+
+.flex-container {
+  display: flex;
 }
 
 h1,
@@ -53,6 +68,38 @@ p {
   display: none;
 }
 
-button, input[type=submit] {
+button,
+input[type=submit] {
   border: none;
+  font: normal normal 500 100% $font-stack ;
+  cursor: pointer;
+}
+
+.card {
+  background-color: $surface;
+  border-radius: 16px;
+  box-shadow: 0px 5px 10px 5px rgba($color: black, $alpha: 0.5);
+}
+
+input,
+textarea,
+select {
+  font: normal normal 400 0.8rem $font-stack ;
+  color: $on-background;
+  padding: 8px 16px 8px 16px;
+  background-color: transparent;
+  border: 2px solid rgba($color: white, $alpha: 0.25);
+  border-radius: 4px;
+  box-shadow: none;
+
+  option {
+    color: black;
+  }
+
+}
+
+
+a,
+a:visited {
+  color: white;
 }
