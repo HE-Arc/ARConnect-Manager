@@ -72,7 +72,8 @@ onMounted(async () => {
                 </div>
                 <div>
 
-                    <span v-if="tournament.playerIds && tournament.playerIds.length >= 2"
+                    <span
+                        v-if="tournament.status.id == TournamentStatus.Closed.id || tournament.playerIds && tournament.playerIds.length >= 2"
                         @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
                         :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
                         title="Cliquez pour passer au prochain statut">next_plan</span>
