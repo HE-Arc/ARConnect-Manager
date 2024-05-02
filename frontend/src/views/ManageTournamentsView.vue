@@ -7,11 +7,17 @@ import { TournamentStatus } from '../domain/TournamentStatus';
 const router = useRouter();
 const tournaments = ref([]);
 
-function deleteTournament(id) {
-    TournamentService.deleteTournament(id).then((successful) => {
-        if (!successful) return;
-        tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
-    });
+function deleteTournament(id,name) {
+    let text = prompt("Êtes-vous sûr de vouloir supprimer le tournoi ?\nSi oui, tapez \"" + name + "\" pour confirmer");
+
+    if(text ==name){
+        
+        TournamentService.deleteTournament(id).then((successful) => {
+            if (!successful) return;
+            tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
+            });
+    }
+   
 }
 
 function editTournament(id) {
@@ -63,7 +69,7 @@ onMounted(async () => {
                         :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }">
                         next_plan
                     </span>
-                    <span @click="deleteTournament(tournament.id)" class="material-symbols-outlined">
+                    <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined">
                         delete
                     </span>
                     <span @click="editTournament(tournament.id)" class="material-symbols-outlined">
