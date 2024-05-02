@@ -9,17 +9,17 @@ const tournaments = ref([]);
 const loading = ref(false);
 
 
-function deleteTournament(id,name) {
+function deleteTournament(id, name) {
     let text = prompt("Êtes-vous sûr de vouloir supprimer le tournoi ?\nSi oui, tapez \"" + name + "\" pour confirmer");
 
-    if(text ==name){
-        
+    if (text == name) {
+
         TournamentService.deleteTournament(id).then((successful) => {
             if (!successful) return;
             tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
-            });
+        });
     }
-   
+
 }
 
 function editTournament(id) {
@@ -32,13 +32,13 @@ function addTournament() {
 
 function nextTournamentStatus(tournament) {
     if (tournament.status.id == TournamentStatus.Completed.id) return;
-    loading.value = true; 
+    loading.value = true;
     TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
         const index = tournaments.value.indexOf(tournament);
         tournaments.value[index].status = newStatus;
-        loading.value = false; 
+        loading.value = false;
     }).catch(() => {
-        loading.value = false; 
+        loading.value = false;
     });
 }
 
@@ -52,8 +52,7 @@ onMounted(async () => {
     <div class="grid-container">
         <h1>
             Gérer les tournois
-            <span @click="addTournament" class="material-symbols-outlined"
-            title="Cliquez pour ajouter un tournoi">
+            <span @click="addTournament" class="material-symbols-outlined" title="Cliquez pour ajouter un tournoi">
                 add
             </span>
         </h1>
@@ -78,8 +77,7 @@ onMounted(async () => {
                             title="Cliquez pour passer au prochain statut">next_plan</span>
                     </template>
                     <template v-else>
-                        <span class="material-symbols-outlined" 
-                        title="Pas assez de joueurs">
+                        <span class="material-symbols-outlined" title="Pas assez de joueurs">
                             cancel
                         </span>
                     </template>
@@ -112,6 +110,20 @@ h1 {
     span {
         cursor: pointer;
         margin-left: 16px;
+        border-width: 1px;
+        border-color: white;
+        background: white;
+        border-style: solid;
+        padding: 4px;
+        border-radius: 4px;
+        color: black;
+        transition: all 0.25s;
+
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 0px 20px rgba($color: $primary, $alpha: 0.5);
+        }
     }
 
 }
@@ -202,7 +214,7 @@ h1 {
     justify-content: center;
     align-items: center;
     border-radius: 1em;
-background-color: #090909;
+    background-color: #090909;
     text-align: center;
     transition: all 0.25s ease-out;
 
@@ -250,8 +262,7 @@ background-color: #090909;
 }
 
 .disabled {
-    pointer-events: none; 
+    pointer-events: none;
     opacity: 0.5;
 }
-
 </style>
