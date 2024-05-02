@@ -48,6 +48,7 @@ namespace :deploy do
     on roles(:app) do
       execute "ln -sf #{shared_path}/.env-api #{release_path}/api/.env"
       execute "ln -sf #{shared_path}/.env-frontend #{release_path}/frontend/.env"
+      execute "ln -sf #{shared_path}/.env-frontend #{release_path}/frontend/.env.production"
     end
   end
 
