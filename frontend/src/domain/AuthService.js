@@ -26,7 +26,7 @@ export class AuthService {
         let response = null;
         try {
             response = await axios.post(
-                `http://localhost:8000/api/user/register/`,
+                `${import.meta.env.VITE_API_URL}/user/register/`,
                 data
             );
         } catch (error) {
@@ -52,7 +52,7 @@ export class AuthService {
         };
 
         const response = await axios.post(
-            `http://localhost:8000/api/user/login/`,
+            `${import.meta.env.VITE_API_URL}/user/login/`,
             data
         )
 
@@ -64,7 +64,7 @@ export class AuthService {
         setCookie("authtoken", response.data.key, 1000000);
         axios.defaults.headers['Authorization'] = `Token ${response.data.key}`;
 
-        const userResponse = await axios.get(`http://localhost:8000/api/user/`);
+        const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}/user/`);
         if (userResponse.status < 200 || userResponse.status >= 300) {
             currentUser.value = null;
             return null;
@@ -83,7 +83,7 @@ export class AuthService {
      */
     static async logout() {
         const response = await axios.post(
-            `http://localhost:8000/api/user/logout/`,
+            `${import.meta.env.VITE_API_URL}/user/logout/`,
         )
         if (response.status >= 200 && response.status < 300) {
             currentUser.value = null;
@@ -106,7 +106,7 @@ export class AuthService {
         if (token == null) return;
         axios.defaults.headers['Authorization'] = `Token ${token}`;
         try {
-            const response = await axios.get(`http://localhost:8000/api/user/`);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/`);
             if (response.status < 200 || response.status >= 300) return;
             return new User(response.data.user_info.isAdmin, response.data.user_info.username, response.data.user_info.tournaments);
         } catch {
