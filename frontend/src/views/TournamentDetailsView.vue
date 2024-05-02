@@ -60,7 +60,7 @@ const unregister = async () => {
 
         <hr>
 
-        <div v-if="tournament.status.id > 1">
+        <div v-if="tournament.status.id > 1" class="display-tournament">
             <img :src="tournament.challongeImageUrl">
         </div>
     </div>
@@ -68,6 +68,9 @@ const unregister = async () => {
 </template>
 
 <style scoped lang="scss">
+@import "@/assets/styles/breakpoints";
+@import "@/assets/styles/colors";
+
 .grid-container * {
     grid-column: 1 / span 12;
 }
@@ -87,5 +90,11 @@ const unregister = async () => {
 .btn-primary {
     grid-column: 4 / span 12;
 
+}
+
+.display-tournament {
+    background-color: $on-primary;
+    padding: 12px 16px;
+    border-radius: 8px; 
 }
 </style>
