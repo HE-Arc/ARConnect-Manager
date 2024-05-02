@@ -71,16 +71,14 @@ onMounted(async () => {
                     {{ (tournament.status) }}
                 </div>
                 <div>
-                    <template v-if="tournament.playerIds && tournament.playerIds.length >= 2">
-                        <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
-                            :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
-                            title="Cliquez pour passer au prochain statut">next_plan</span>
-                    </template>
-                    <template v-else>
-                        <span class="material-symbols-outlined" title="Pas assez de joueurs">
-                            cancel
-                        </span>
-                    </template>
+
+                    <span v-if="tournament.playerIds && tournament.playerIds.length >= 2"
+                        @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
+                        title="Cliquez pour passer au prochain statut">next_plan</span>
+                    <span v-else class="material-symbols-outlined disabled" title="Pas assez de joueurs">
+                        cancel
+                    </span>
                     <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined"
                         title="Cliquez pour supprimer le tournoi">
                         delete
@@ -181,12 +179,19 @@ h1 {
             user-select: none;
             /* Standard syntax */
 
-            span:hover {
-                cursor: pointer;
-            }
+            span {
+                &:hover {
+                    cursor: pointer;
+                }
 
-            span.disabled:hover {
-                cursor: not-allowed;
+                &.disabled {
+                    opacity: 0.5;
+
+                    &:hover {
+
+                        cursor: not-allowed;
+                    }
+                }
             }
 
         }
@@ -259,10 +264,5 @@ h1 {
     100% {
         transform: rotate(360deg);
     }
-}
-
-.disabled {
-    pointer-events: none;
-    opacity: 0.5;
 }
 </style>
