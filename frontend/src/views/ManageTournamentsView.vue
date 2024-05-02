@@ -6,6 +6,8 @@ import { TournamentStatus } from '../domain/TournamentStatus';
 
 const router = useRouter();
 const tournaments = ref([]);
+const loading = ref(false);
+
 
 function deleteTournament(id,name) {
     let text = prompt("Êtes-vous sûr de vouloir supprimer le tournoi ?\nSi oui, tapez \"" + name + "\" pour confirmer");
@@ -30,9 +32,13 @@ function addTournament() {
 
 function nextTournamentStatus(tournament) {
     if (tournament.status.id == TournamentStatus.Completed.id) return;
+    loading.value = true; 
     TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
         const index = tournaments.value.indexOf(tournament);
         tournaments.value[index].status = newStatus;
+        loading.value = false; 
+    }).catch(() => {
+        loading.value = false; 
     });
 }
 
@@ -67,7 +73,7 @@ onMounted(async () => {
                 </div>
                 <div>
                     <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
-                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }"
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
                         title="Cliquez pour passer au prochain status">
                         next_plan
                     </span>
@@ -79,6 +85,8 @@ onMounted(async () => {
                         title="Cliquez pour modifier le tournoi">
                         edit
                     </span>
+                    <div v-if="loading" class="loading-spinner"></div>
+
                 </div>
                 <hr>
             </div>
@@ -188,7 +196,7 @@ h1 {
     justify-content: center;
     align-items: center;
     border-radius: 1em;
-    background-color: #090909;
+background-color: #090909;
     text-align: center;
     transition: all 0.25s ease-out;
 
@@ -215,4 +223,29 @@ h1 {
         width: calc(100% - (3 * 8px / 4));
     }
 }
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+    width: 20%;
+    height: 100%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.disabled {
+    pointer-events: none; 
+    opacity: 0.5;
+}
+
 </style>
