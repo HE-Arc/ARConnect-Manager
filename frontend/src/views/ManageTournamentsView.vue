@@ -72,11 +72,17 @@ onMounted(async () => {
                     {{ (tournament.status) }}
                 </div>
                 <div>
-                    <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
-                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
-                        title="Cliquez pour passer au prochain status">
-                        next_plan
-                    </span>
+                    <template v-if="tournament.playerIds && tournament.playerIds.length >= 2">
+                        <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
+                            :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
+                            title="Cliquez pour passer au prochain statut">next_plan</span>
+                    </template>
+                    <template v-else>
+                        <span class="material-symbols-outlined" 
+                        title="Pas assez de joueurs">
+                            cancel
+                        </span>
+                    </template>
                     <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined"
                         title="Cliquez pour supprimer le tournoi">
                         delete
