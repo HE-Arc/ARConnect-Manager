@@ -8,6 +8,7 @@ const form = ref(null)
 
 const username = ref(null)
 const password = ref(null)
+const errorMessage = ref(null)
 
 const login = () => {
     if (!form.value.reportValidity()) return;
@@ -16,7 +17,9 @@ const login = () => {
         password.value,
     ).then((token) => {
         router.push({ name: "home" })
-    })
+    }).catch(error => {
+        errorMessage.value = "Nom d'utilisateur ou mot de passe incorrect"; // Définition du message d'erreur
+    });
 };
 
 </script>
@@ -39,12 +42,16 @@ const login = () => {
             </form>
             <button class="btn-primary" @click="login">Connexion</button>
             <hr>
+            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
             <p>Pas de compte ? <router-link :to="{ name: 'register' }">S'inscrire</router-link></p>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/breakpoints";
+@import "@/assets/styles/colors";
+
 .flex-container {
     align-items: center;
     justify-content: center;
@@ -86,6 +93,13 @@ const login = () => {
                 }
             }
         }
+    }
+    .error-message {
+        background-color: $primary;
+        color: $on-primary;
+        text-align: center;
+        padding: 12px 16px;
+        border-radius: 8px;
     }
 }
 </style>
