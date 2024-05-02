@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { setCookie, getCookie, deleteAllCookies } from "./Cookies";
 import { User } from './User';
 
-
 /** Utility class to manage authentication and make requests to the API.*/
 export class AuthService {
 
@@ -17,10 +16,13 @@ export class AuthService {
      * @return {boolean} Wether the operation was successful.
      */
     static async register(username, password, passwordConfirmation) {
+        const hash = await this.hashString(password);
+        const hashConf = await this.hashString(passwordConfirmation);
+
         let data = {
             "username": username,
-            "password1": password,
-            "password2": passwordConfirmation,
+            "password1": hash,
+            "password2": hashConf,
         };
 
         let response = null;
@@ -46,10 +48,14 @@ export class AuthService {
      * @return {string} The authentication token that was saved.
      */
     static async login(username, password) {
+        const hash = await this.hashString(password);
+
         let data = {
             "username": username,
-            "password": password,
+            "password": hash,
         };
+
+
 
         const response = await axios.post(
             `${import.meta.env.VITE_API_URL}/user/login/`,
@@ -112,6 +118,27 @@ export class AuthService {
         } catch {
             return null;
         }
+    }
+
+
+    /**
+     * Hashes a string using the SHA-256 algorithm.
+     * @param {string} str - The string to be hashed.
+     * @returns {Promise<string>} A Promise that resolves with the hexadecimal hash string.
+     */
+    static async hashString(str) {
+        // Convert the string to an array buffer
+        const encoder = new TextEncoder();
+        const data = encoder.encode(str);
+
+        // Hash the data using SHA-256 algorithm
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+        // Convert the hash buffer to a hex string
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+        return hashHex;
     }
 }
 

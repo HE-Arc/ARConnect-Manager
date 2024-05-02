@@ -6,18 +6,20 @@ import { TournamentStatus } from '../domain/TournamentStatus';
 
 const router = useRouter();
 const tournaments = ref([]);
+const loading = ref(false);
 
-function deleteTournament(id,name) {
+
+function deleteTournament(id, name) {
     let text = prompt("Êtes-vous sûr de vouloir supprimer le tournoi ?\nSi oui, tapez \"" + name + "\" pour confirmer");
 
-    if(text ==name){
-        
+    if (text == name) {
+
         TournamentService.deleteTournament(id).then((successful) => {
             if (!successful) return;
             tournaments.value = tournaments.value.filter((tournament) => tournament.id != id);
-            });
+        });
     }
-   
+
 }
 
 function editTournament(id) {
@@ -30,9 +32,13 @@ function addTournament() {
 
 function nextTournamentStatus(tournament) {
     if (tournament.status.id == TournamentStatus.Completed.id) return;
+    loading.value = true;
     TournamentService.nextTournamentStatus(tournament).then((newStatus) => {
         const index = tournaments.value.indexOf(tournament);
         tournaments.value[index].status = newStatus;
+        loading.value = false;
+    }).catch(() => {
+        loading.value = false;
     });
 }
 
@@ -46,7 +52,7 @@ onMounted(async () => {
     <div class="grid-container">
         <h1>
             Gérer les tournois
-            <span @click="addTournament" class="material-symbols-outlined">
+            <span @click="addTournament" class="material-symbols-outlined" title="Cliquez pour ajouter un tournoi">
                 add
             </span>
         </h1>
@@ -65,10 +71,13 @@ onMounted(async () => {
                     {{ (tournament.status) }}
                 </div>
                 <div>
-                    <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
-                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }"
-                        title="Cliquez pour passer au prochain plan">
-                        next_plan
+
+                    <span v-if="tournament.playerIds && tournament.playerIds.length >= 2"
+                        @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id || tournament.loading }"
+                        title="Cliquez pour passer au prochain statut">next_plan</span>
+                    <span v-else class="material-symbols-outlined disabled" title="Pas assez de joueurs">
+                        cancel
                     </span>
                     <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined"
                         title="Cliquez pour supprimer le tournoi">
@@ -78,6 +87,8 @@ onMounted(async () => {
                         title="Cliquez pour modifier le tournoi">
                         edit
                     </span>
+                    <div v-if="loading" class="loading-spinner"></div>
+
                 </div>
                 <hr>
             </div>
@@ -97,6 +108,20 @@ h1 {
     span {
         cursor: pointer;
         margin-left: 16px;
+        border-width: 1px;
+        border-color: white;
+        background: white;
+        border-style: solid;
+        padding: 4px;
+        border-radius: 4px;
+        color: black;
+        transition: all 0.25s;
+
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 0px 20px rgba($color: $primary, $alpha: 0.5);
+        }
     }
 
 }
@@ -154,12 +179,19 @@ h1 {
             user-select: none;
             /* Standard syntax */
 
-            span:hover {
-                cursor: pointer;
-            }
+            span {
+                &:hover {
+                    cursor: pointer;
+                }
 
-            span.disabled:hover {
-                cursor: not-allowed;
+                &.disabled {
+                    opacity: 0.5;
+
+                    &:hover {
+
+                        cursor: not-allowed;
+                    }
+                }
             }
 
         }
@@ -212,6 +244,25 @@ h1 {
 @media(max-width: $small-breakpoint) {
     .item {
         width: calc(100% - (3 * 8px / 4));
+    }
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+    width: 20%;
+    height: 100%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>

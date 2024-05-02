@@ -1,6 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, resolveDirective } from 'vue';
 import { currentUser, AuthService } from '@/domain/AuthService';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const isActive = ref(false);
 
@@ -10,7 +13,10 @@ const toggleMenu = () => {
 }
 
 const logout = () => {
-  AuthService.logout();
+  AuthService.logout().then(() => {
+    router.push({ name: 'home' });
+  })
+ 
 }
 
 </script>
