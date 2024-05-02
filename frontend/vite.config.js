@@ -13,5 +13,8 @@ export default defineConfig({
   },
   build: {
     target: 'esnext'
+  },
+  define: {
+    'import.meta.env': JSON.stringify(import.meta.env)
   }
 })
