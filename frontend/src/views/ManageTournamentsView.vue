@@ -46,7 +46,8 @@ onMounted(async () => {
     <div class="grid-container">
         <h1>
             Gérer les tournois
-            <span @click="addTournament" class="material-symbols-outlined">
+            <span @click="addTournament" class="material-symbols-outlined"
+            title="Cliquez pour ajouter un tournoi">
                 add
             </span>
         </h1>
@@ -67,7 +68,7 @@ onMounted(async () => {
                 <div>
                     <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
                         :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }"
-                        title="Cliquez pour passer au prochain plan">
+                        title="Cliquez pour passer au prochain status">
                         next_plan
                     </span>
                     <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined"

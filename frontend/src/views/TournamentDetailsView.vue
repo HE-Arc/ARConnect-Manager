@@ -28,6 +28,8 @@ const register = async () => {
         }
         await TournamentService.registerForTournament(tournamentId);
     }
+
+    location.reload();
 };
 
 const unregister = async () => {
@@ -36,6 +38,7 @@ const unregister = async () => {
         isRegistered.value = false;
     }
     await TournamentService.unregisterFromTournament(tournamentId);
+    location.reload();
 };
 
 </script>
