@@ -35,7 +35,7 @@ const register = async () => {
             <form method="post" ref="form">
                 <div class="form-row">
                     <label for="username">Pseudo :</label>
-                    <input id="username" type="text" name="username" placeholder="john.doe@example.com"
+                    <input id="username" type="text" name="username"
                         v-model="username" required>
                 </div>
                 <div class="form-row">
