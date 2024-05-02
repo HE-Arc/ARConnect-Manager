@@ -24,7 +24,7 @@ const addTournament = () => {
 <template>
     <div class="grid-container">
         <h1>Ajouter un tournoi</h1>
-        <form action="http://localhost:8000/api/tournaments/ " method="post" ref="form">
+        <form ref="form">
             <label for="name">Nom du tournoi :</label>
             <input id="name" type="text" name="name" placeholder="Free For All" v-model="name" required>
 

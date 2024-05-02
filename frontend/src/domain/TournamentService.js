@@ -12,7 +12,7 @@ export class TournamentService {
      * @return {Tournament[]} The array of tournaments.
      */
     static async getAllTournaments() {
-        const response = await axios.get("http://localhost:8000/api/tournaments");
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/tournaments`);
         if (response.status < 200 || response.status > 299) return;
         return response.data.map(
             (tournamentData) => new Tournament(
@@ -32,7 +32,7 @@ export class TournamentService {
      * @return {Tournament} The tournament.
      */
     static async getTournamentById(id) {
-        const response = await axios.get(`http://localhost:8000/api/tournaments/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/tournaments/${id}`);
         if (response.status < 200 || response.status > 299) return;
         return new Tournament(
             response.data.id,
@@ -52,7 +52,7 @@ export class TournamentService {
      */
     static async deleteTournament(id) {
         const response = await axios.delete(
-            `http://localhost:8000/api/tournaments/${id}`,
+            `${import.meta.env.VITE_API_URL}/tournaments/${id}`,
         );
         return response.status >= 200 && response.status < 300
     }
@@ -72,7 +72,7 @@ export class TournamentService {
         };
 
         const response = await axios.post(
-            "http://localhost:8000/api/tournaments/",
+            `${import.meta.env.VITE_API_URL}/tournaments/`,
             data
         )
 
@@ -92,7 +92,7 @@ export class TournamentService {
         };
 
         const response = await axios.put(
-            `http://localhost:8000/api/tournaments/${tournament.id}/`,
+            `${import.meta.env.VITE_API_URL}/tournaments/${tournament.id}/`,
             data
         )
 
@@ -101,7 +101,7 @@ export class TournamentService {
 
     static async registerForTournament(tournamentId) {
         const response = await axios.post(
-            `http://localhost:8000/api/tournaments/${tournamentId}/register/`,
+            `${import.meta.env.VITE_API_URL}/tournaments/${tournamentId}/register/`,
             null
         )
         return { success: response.status >= 200 && response.status < 300, message: "Registration successful" };
@@ -111,7 +111,7 @@ export class TournamentService {
 
     static async unregisterFromTournament(tournamentId) {
         const response = await axios.post(
-            `http://localhost:8000/api/tournaments/${tournamentId}/unregister/`,
+            `${import.meta.env.VITE_API_URL}/tournaments/${tournamentId}/unregister/`,
             null
         )
         return { success: response.status >= 200 && response.status < 300, message: "Unregistration successful" };
@@ -130,15 +130,15 @@ export class TournamentService {
         let resultStatus = tournament.status;
         switch (tournament.status.id) {
             case TournamentStatus.Closed.id:
-                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/open_registration/`
+                endpoint = `${import.meta.env.VITE_API_URL}/tournaments/${tournament.id}/open_registration/`
                 resultStatus = TournamentStatus.Open;
                 break;
             case TournamentStatus.Open.id:
-                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/start/`
+                endpoint = `${import.meta.env.VITE_API_URL}/tournaments/${tournament.id}/start/`
                 resultStatus = TournamentStatus.Running;
                 break;
             case TournamentStatus.Running.id:
-                endpoint = `http://localhost:8000/api/tournaments/${tournament.id}/finish/`
+                endpoint = `${import.meta.env.VITE_API_URL}/tournaments/${tournament.id}/finish/`
                 resultStatus = TournamentStatus.Completed;
                 break;
             case TournamentStatus.Completed.id:
@@ -157,7 +157,7 @@ export class TournamentService {
     * @return {TournamentStatus} The updated tournament status.
     */
     static async getMatchesByTournamentId(tournamentId) {
-        const response = await axios.post(`http://localhost:8000/api/tournaments/${tournamentId}/matches/`);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/tournaments/${tournamentId}/matches/`);
         if (response.status < 200 || response.status > 299) return;
         return response.data.map(
             (matchData) => new Match(
@@ -195,7 +195,7 @@ export class TournamentService {
         };
 
         const response = await axios.post(
-            `http://localhost:8000/api/tournaments/${tournamentId}/scores/`,
+            `${import.meta.env.VITE_API_URL}/tournaments/${tournamentId}/scores/`,
             data
         )
 
