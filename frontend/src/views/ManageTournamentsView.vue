@@ -66,13 +66,16 @@ onMounted(async () => {
                 </div>
                 <div>
                     <span @click="nextTournamentStatus(tournament)" class="material-symbols-outlined"
-                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }">
+                        :class="{ 'disabled': tournament.status.id == TournamentStatus.Completed.id }"
+                        title="Cliquez pour passer au prochain plan">
                         next_plan
                     </span>
-                    <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined">
+                    <span @click="deleteTournament(tournament.id, tournament.name)" class="material-symbols-outlined"
+                        title="Cliquez pour supprimer le tournoi">
                         delete
                     </span>
-                    <span @click="editTournament(tournament.id)" class="material-symbols-outlined">
+                    <span @click="editTournament(tournament.id)" class="material-symbols-outlined"
+                        title="Cliquez pour modifier le tournoi">
                         edit
                     </span>
                 </div>
