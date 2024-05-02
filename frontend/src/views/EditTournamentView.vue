@@ -81,13 +81,15 @@ const sendMatchResult = (match) => {
                     <label :for="match.id + '-' + match.player1Id">Score de {{ match.player1Name }} :</label>
                     <input :id="match.id + '-' + match.player1Id" type="number" :name="match.id + '-' + match.player1Id"
                         placeholder="0" required :disabled="match.state != 'open'"
-                        :value="match.scores === '' ? null : match.scores.split('-')[0]">
+                        :value="match.scores === '' ? null : match.scores.split('-')[0]"
+                        min="0" max="100">
 
 
                     <label :for="match.id + '-' + match.player2Id">Score de {{ match.player2Name }} :</label>
                     <input :id="match.id + '-' + match.player2Id" type="number" :name="match.id + '-' + match.player2Id"
                         placeholder="0" required :disabled="match.state != 'open'"
-                        :value="match.scores === '' ? null : match.scores.split('-')[1]">
+                        :value="match.scores === '' ? null : match.scores.split('-')[1]"
+                        min="0" max="100">
                 </form>
                 <button class="btn-primary" @click="sendMatchResult(match)"
                     :disabled="match.state != 'open'">Envoyer</button>
