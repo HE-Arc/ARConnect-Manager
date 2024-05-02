@@ -80,13 +80,13 @@ const sendMatchResult = (match) => {
                 <form :id="'form-' + match.id">
                     <label :for="match.id + '-' + match.player1Id">Score de {{ match.player1Name }} :</label>
                     <input :id="match.id + '-' + match.player1Id" type="number" :name="match.id + '-' + match.player1Id"
-                        placeholder="14" required :disabled="match.state != 'open'"
+                        placeholder="0" required :disabled="match.state != 'open'"
                         :value="match.scores === '' ? null : match.scores.split('-')[0]">
 
 
                     <label :for="match.id + '-' + match.player2Id">Score de {{ match.player2Name }} :</label>
                     <input :id="match.id + '-' + match.player2Id" type="number" :name="match.id + '-' + match.player2Id"
-                        placeholder="7" required :disabled="match.state != 'open'"
+                        placeholder="0" required :disabled="match.state != 'open'"
                         :value="match.scores === '' ? null : match.scores.split('-')[1]">
                 </form>
                 <button class="btn-primary" @click="sendMatchResult(match)"
