@@ -25,3 +25,5 @@ sqlparse==0.4.4
 tzdata==2024.1
 tzlocal==2.1
 urllib3==2.2.1
+psycopg-binary==3.1.8
+psycopg==3.1.8

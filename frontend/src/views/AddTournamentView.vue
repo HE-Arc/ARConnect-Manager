@@ -37,6 +37,8 @@ const addTournament = () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/breakpoints";
+
 h1,
 form {
     grid-column: 1 / span 12;
@@ -64,5 +66,47 @@ form {
 
 button {
     grid-column: 3 / span 4;
+}
+
+@media(max-width: $medium-breakpoint) {
+
+    form {
+        label {
+            grid-column: 1 / span 4;
+        }
+
+        input,
+        textarea,
+        select {
+            grid-column: 5 / span 8;
+            height: 32px;
+        }
+    }
+
+    button {
+        grid-column: 5 / span 8;
+        height: 32px;
+    }
+}
+
+@media(max-width: $small-breakpoint) {
+
+    form {
+        label {
+            grid-column: 1 / span 12;
+        }
+
+        input,
+        textarea,
+        select {
+            grid-column: 1 / span 12;
+            height: 32px;
+        }
+    }
+
+    button {
+        grid-column: 1 / span 12;
+        height: 32px;
+    }
 }
 </style>
