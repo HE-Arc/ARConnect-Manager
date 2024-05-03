@@ -10,10 +10,10 @@ class TournamentItem(models.Model):
             default=0,
             validators=[MinValueValidator(0), MaxValueValidator(3)]
         )                       
-    players = models.ManyToManyField(User, related_name='players')
+    players = models.ManyToManyField(User, related_name='players')  #N-N relationship with the players
     
     challonge_id = models.CharField(max_length=100, blank=True)     #ID of the tournament on Challonge
-    challonge_image_url = models.URLField(blank=True)                         #URL of the image of the tournament
+    challonge_image_url = models.URLField(blank=True)               #URL of the image of the tournament
     
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)               #Date of creation
+    updated = models.DateTimeField(auto_now=True)                   #Date of last update
