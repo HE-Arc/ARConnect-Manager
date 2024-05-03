@@ -151,11 +151,12 @@ class UserView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    #Get the user information
     def get(self, request):
         user = request.user
         user_info = {
             'username': user.username,
-            'isAdmin': user.is_staff,
+            'isAdmin': user.is_staff, #flag indicating if the user is an admin
             'tournaments': user.players.all().values_list('pk', flat=True)
         }
             
